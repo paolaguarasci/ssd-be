@@ -2,7 +2,7 @@
 
 # Start Server Dev
 ```shell
-python manage.py runsslserver --certificate cert/localhost.crt --key cert/localhost.key
+pipenv run dev
 ```
 
 # Start Server Prod
