@@ -1,0 +1,45 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "*"
+django-allauth = "*"
+django-cors-headers = "*"
+django-dotenv = "*"
+django-filter = "*"
+django-secure = "*"
+django-sslserver = "*"
+djangorestframework = "*"
+djangorestframework-simplejwt = "*"
+dj-rest-auth = "*"
+coreapi = "*"
+cryptography = "*"
+gunicorn = "*"
+markdown = "*"
+pyyaml = "*"
+whitenoise = "*"
+
+[dev-packages]
+autopep8 = "*"
+mixer = "*"
+pytest = "*"
+pytest-cov = "*"
+pytest-django = "*"
+
+[requires]
+python_version = "3.10"
+
+[scripts]
+dev = "python manage.py runsslserver --certificate cert/localhost.crt --key cert/localhost.key"
+prod = "gunicorn -c config/gunicorn/prod.py"
+test = "pytest"
+coverage = "pytest --cov=api tests/"
+loadbook = "python manage.py loaddata api/fixtures/book.json"
+loadloans = "python manage.py loaddata api/fixtures/bookLoan.json"
+loadall = "python manage.py loaddata api/fixtures/all.json"
+mkm = "python manage.py makemigrations"
+mkmapi = "python manage.py makemigrations api"
+migrate = "python manage.py migrate"
+migrateapi = "python manage.py migrate api"

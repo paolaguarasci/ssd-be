@@ -1,0 +1,93 @@
+
+@host = https://127.0.0.1:8000
+# @host = https://ssd.pingflood.tk
+@superuser_username = {{$dotenv SUPERUSER_USERNAME}}
+@superuser_password = {{$dotenv SUPERUSER_PASSWORD}}
+@editor_username = {{$dotenv EDITOR_USERNAME}}
+@editor_password = {{$dotenv EDITOR_PASSWORD}}
+@user_username = {{$dotenv USER_USERNAME}}
+@user_password = {{$dotenv USER_PASSWORD}}
+@authToken = {{login.response.body.access}}
+
+###
+# @name login
+POST {{host}}/api/v1/login/
+Content-Type: application/json
+
+{
+  "username": "{{superuser_username}}",
+  "password": "{{superuser_password}}"
+}
+
+###
+# @name login
+POST {{host}}/api/v1/login/
+Content-Type: application/json
+
+{
+  "username": "{{editor_username}}",
+  "password": "{{editor_password}}"
+}
+
+###
+# @name login
+POST {{host}}/api/v1/login/
+Content-Type: application/json
+
+{
+  "username": "{{user_username}}",
+  "password": "{{user_password}}"
+}
+
+####  DRESS ######
+
+### 
+GET {{host}}/api/v1/dress/
+Authorization: Bearer {{authToken}}
+
+### 
+GET {{host}}/api/v1/dress/1
+Authorization: Bearer {{authToken}}
+
+###
+POST {{host}}/api/v1/dress/
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+
+### 
+PATCH {{host}}/api/v1/dress/8
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+
+###
+DELETE {{host}}/api/v1/dress/8
+Authorization: Bearer {{authToken}}
+
+
+#### DRESS LOANS ######
+
+### 
+GET {{host}}/api/v1/loans/
+Authorization: Bearer {{authToken}}
+
+### 
+GET {{host}}/api/v1/loans/4
+Authorization: Bearer {{authToken}}
+
+###
+POST {{host}}/api/v1/loans/
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+
+### 
+PATCH {{host}}/api/v1/loans/5
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+
+###
+DELETE {{host}}/api/v1/loans/5
+Authorization: Bearer {{authToken}}
