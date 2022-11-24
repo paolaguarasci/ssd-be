@@ -1,6 +1,6 @@
 import multiprocessing
 
-wsgi_app = "bookshop.wsgi:application"
+wsgi_app = "dressy.wsgi:application"
 workers = multiprocessing.cpu_count() * 2 + 1
 bind = "127.0.0.1:8000"
 accesslog = "/var/log/gunicorn/access.log"
