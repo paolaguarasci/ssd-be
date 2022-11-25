@@ -8,5 +8,5 @@ errorlog = "/var/log/gunicorn/error.log"
 capture_output = True
 pidfile = "/var/run/gunicorn/prod.pid"
 daemon = True
-keyfile = "/opt/apps/ssdb/cert/localhost.key"
-certfile = "/opt/apps/ssdb/cert/localhost.crt"
+keyfile = "/opt/apps/ssd-dressy-be/cert/localhost.key"
+certfile = "/opt/apps/ssd-dressy-be/cert/localhost.crt"

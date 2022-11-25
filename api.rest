@@ -56,11 +56,11 @@ Authorization: Bearer {{authToken}}
 
 
 ### 
-PATCH {{host}}/api/v1/dress/8
+PUT {{host}}/api/v1/dress/8
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
-
+dress
 ###
 DELETE {{host}}/api/v1/dress/8
 Authorization: Bearer {{authToken}}
@@ -69,7 +69,7 @@ Authorization: Bearer {{authToken}}
 #### DRESS LOANS ######
 
 ### 
-GET {{host}}/api/v1/loans/
+GET {{host}}/api/v1/loan
 Authorization: Bearer {{authToken}}
 
 ### 
@@ -83,7 +83,7 @@ Authorization: Bearer {{authToken}}
 
 
 ### 
-PATCH {{host}}/api/v1/loans/5
+PUT {{host}}/api/v1/loans/5
 Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
