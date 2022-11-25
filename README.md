@@ -14,3 +14,5 @@ sudo chown -R paola:paola /var/run/gunicorn
 pipenv run prod
 ```
 
+
+
