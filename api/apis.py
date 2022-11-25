@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from rest_framework import generics
+
 from api.models import Dress, DressLoan
-from api.serializers import DressSerializers, DressLoanSerializers
-# Create your views here.
+from api.serializers import DressLoanSerializers, DressSerializers
+
 
 class DressList(generics.ListCreateAPIView):
   queryset=Dress.objects.all()
@@ -11,6 +12,7 @@ class DressList(generics.ListCreateAPIView):
 class DressDetail(generics.RetrieveUpdateDestroyAPIView):
   queryset=Dress.objects.all()
   serializer_class=DressSerializers
+  lookup_field="id"
 
 
 class DressLoanList(generics.ListCreateAPIView):
@@ -20,3 +22,4 @@ class DressLoanList(generics.ListCreateAPIView):
 class DressLoanDetail(generics.RetrieveUpdateDestroyAPIView):
   queryset=DressLoan.objects.all()
   serializer_class=DressLoanSerializers
+  lookup_field="id"

@@ -1,9 +1,10 @@
-from django.db import models
+import uuid
+
+from django.contrib.auth import get_user_model
 from django.core.validators import (MaxValueValidator, MinValueValidator,
                                     RegexValidator)
-from django.contrib.auth import get_user_model
+from django.db import models
 
-import uuid
 # Create your models here.
 
 
@@ -39,7 +40,6 @@ class Dress(models.Model):
                                            MaxValueValidator(60)])
     
     def __str__(self):
-
       return str(self.id) + " | " + str(self.brands[self.brand][1]) + " | " + str(self.priceInCents / 100) + " | " + str(self.materials[self.material][1]) + " | " + str(self.colors[self.color][1]) + " | " + str(self.size)
     
 
