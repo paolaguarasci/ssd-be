@@ -60,7 +60,7 @@ PATCH {{host}}/api/v1/dress/8
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
-
+dress
 ###
 DELETE {{host}}/api/v1/dress/8
 Authorization: Bearer {{authToken}}
@@ -69,7 +69,7 @@ Authorization: Bearer {{authToken}}
 #### DRESS LOANS ######
 
 ### 
-GET {{host}}/api/v1/loans/
+GET {{host}}/api/v1/loan
 Authorization: Bearer {{authToken}}
 
 ### 
@@ -91,3 +91,11 @@ Content-Type: application/json
 ###
 DELETE {{host}}/api/v1/loans/5
 Authorization: Bearer {{authToken}}
+
+
+
+###
+
+GET https://127.0.0.1:8000/api/v1/dress
+Authorization: Bearer {{authToken}}str(self.materials[self.material][1])
+    
