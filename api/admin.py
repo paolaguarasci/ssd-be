@@ -20,9 +20,10 @@ class DressLoanAdmin(admin.ModelAdmin):
         'startDate',
         'endDate',
         'dress_id',
-        'user',
+        'loaner',
         'totalPrice_Euro',
-        'loanDurationDays'
+        'loanDurationDays',
+        'insertBy'
     )
 
     @admin.display()

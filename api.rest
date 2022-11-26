@@ -3,10 +3,13 @@
 # @host = https://ssd.pingflood.tk
 @superuser_username = {{$dotenv SUPERUSER_USERNAME}}
 @superuser_password = {{$dotenv SUPERUSER_PASSWORD}}
-@editor_username = {{$dotenv EDITOR_USERNAME}}
-@editor_password = {{$dotenv EDITOR_PASSWORD}}
+@staff_username = {{$dotenv STAFF_USERNAME}}
+@staff_password = {{$dotenv STAFF_PASSWORD}}
 @user_username = {{$dotenv USER_USERNAME}}
 @user_password = {{$dotenv USER_PASSWORD}}
+@user2_username = {{$dotenv USER2_USERNAME}}
+@user2_password = {{$dotenv USER2_PASSWORD}}
+
 @authToken = {{login.response.body.access}}
 
 ###
@@ -25,8 +28,8 @@ POST {{host}}/api/v1/login/
 Content-Type: application/json
 
 {
-  "username": "{{editor_username}}",
-  "password": "{{editor_password}}"
+  "username": "{{staff_username}}",
+  "password": "{{staff_password}}"
 }
 
 ###
@@ -39,6 +42,16 @@ Content-Type: application/json
   "password": "{{user_password}}"
 }
 
+###
+# @name login
+POST {{host}}/api/v1/login/
+Content-Type: application/json
+
+{
+  "username": "{{user2_username}}",
+  "password": "{{user2_password}}"
+}
+
 ####  DRESS ######
 
 ### 
@@ -46,7 +59,7 @@ GET {{host}}/api/v1/dress/
 Authorization: Bearer {{authToken}}
 
 ### 
-GET {{host}}/api/v1/dress/1
+GET {{host}}/api/v1/dress/28bce53b-6c7e-478b-ab85-a5f2066a5278
 Authorization: Bearer {{authToken}}
 
 ###
@@ -54,40 +67,115 @@ POST {{host}}/api/v1/dress/
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
+{
+  "brand": 2,
+  "priceInCents": 5000,
+  "material": 2,
+  "color": 5,
+  "size": 42
+}
 
 ### 
-PUT {{host}}/api/v1/dress/8
+PUT {{host}}/api/v1/dress/28bce53b-6c7e-478b-ab85-a5f2066a5278
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
-dress
+{
+  "id": "28bce53b-6c7e-478b-ab85-a5f2066a5278",
+  "brand": 1,
+  "priceInCents": 5000,
+  "material": 2,
+  "color": 5,
+  "size": 42
+}
+
 ###
-DELETE {{host}}/api/v1/dress/8
+DELETE {{host}}/api/v1/dress/f51dafc6-4f40-4670-aa39-1920c80289b6
 Authorization: Bearer {{authToken}}
 
 
-#### DRESS LOANS ######
+#### DRESS LOAN ######
 
 ### 
 GET {{host}}/api/v1/loan
 Authorization: Bearer {{authToken}}
 
 ### 
-GET {{host}}/api/v1/loans/4
+GET {{host}}/api/v1/loan/5f9c17cd-ff58-438c-8b89-e97631039f1a
 Authorization: Bearer {{authToken}}
 
 ###
-POST {{host}}/api/v1/loans/
+POST {{host}}/api/v1/loan/
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
+{ 
+  "startDate": "2022-11-26",
+  "endDate": "2022-12-12",
+  "dress": "28bce53b-6c7e-478b-ab85-a5f2066a5278",
+  "loaner": 2,
+  "totalPrice": 800.0,
+  "loanDurationDays": 16,
+  "insertBy": 1
+}
 
 ### 
-PUT {{host}}/api/v1/loans/5
+PUT {{host}}/api/v1/loan/5f9c17cd-ff58-438c-8b89-e97631039f1a
 Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
+{
+  "id": "fe5663e9-61ef-486e-b5a1-d7b8a3c77e9d",
+  "startDate": "2022-11-26",
+  "endDate": "2022-12-13",
+  "dress": "28bce53b-6c7e-478b-ab85-a5f2066a5278",
+  "loaner": 2,
+  "totalPrice": 800.0,
+  "loanDurationDays": 17,
+  "insertBy": 1
+}
 
 ###
-DELETE {{host}}/api/v1/loans/5
+DELETE {{host}}/api/v1/loan/b3819e83-1863-49a2-8871-02acb2eae79d
+Authorization: Bearer {{authToken}}
+
+#### USER ######
+
+### 
+GET {{host}}/api/v1/user
+Authorization: Bearer {{authToken}}
+
+### 
+GET {{host}}/api/v1/user/3
+Authorization: Bearer {{authToken}}
+
+###
+POST {{host}}/api/v1/user/
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "dress": "28bce53b-6c7e-478b-ab85-a5f2066a5278",
+  "startDate": "2022-11-26",
+  "endDate": "2022-12-12",
+  "loaner": 2,
+  "insertBy": 3
+}
+
+### 
+PUT {{host}}/api/v1/user/1
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "id": "b3819e83-1863-49a2-8871-02acb2eae79d",
+  "dress": "28bce53b-6c7e-478b-ab85-a5f2066a5278",
+  "startDate": "2022-11-26",
+  "endDate": "2022-12-12",
+  "loaner": 2,
+  "insertBy": 1
+}
+
+###
+DELETE {{host}}/api/v1/user/4
 Authorization: Bearer {{authToken}}
