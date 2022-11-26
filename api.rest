@@ -177,3 +177,6 @@ Content-Type: application/json
 ###
 DELETE {{host}}/api/v1/user/4
 Authorization: Bearer {{authToken}}
+
+###
+GET {{host}}/schema
