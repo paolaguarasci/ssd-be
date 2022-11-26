@@ -29,5 +29,5 @@ class DressLoanSerializers(serializers.ModelSerializer):
         model = DressLoan
         # depth = 1
 
-    def create(self, validated_data):
-        return DressLoan.objects.create(**validated_data)
+    # def create(self, validated_data):
+    #     return DressLoan.objects.create(**validated_data)
