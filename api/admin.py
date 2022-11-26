@@ -6,6 +6,7 @@ from api.models import Dress, DressLoan
 class DressAdmin(admin.ModelAdmin):
     list_display = (
         'id',
+        'description',
         'brand',
         'priceInCents',
         'material',

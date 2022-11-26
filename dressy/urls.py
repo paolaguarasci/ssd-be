@@ -7,8 +7,8 @@ from rest_framework.schemas import get_schema_view
 from rest_framework_simplejwt.views import (TokenObtainPairView,
                                             TokenRefreshView)
 
-API_TITLE = ""
-API_DESCRIPTION = ""
+API_TITLE = "Dressy API"
+API_DESCRIPTION = "A web API for creating and editing dress loans."
 
 urlpatterns = [
     path(os.environ['SUPERUSER_PATH'], admin.site.urls),
