@@ -1,6 +1,6 @@
 
-# @host = https://127.0.0.1:8000
-@host = https://ssd.pingflood.tk
+@host = https://127.0.0.1:8000
+# @host = https://ssd.pingflood.tk
 @superuser_username = {{$dotenv SUPERUSER_USERNAME}}
 @superuser_password = {{$dotenv SUPERUSER_PASSWORD}}
 @staff_username = {{$dotenv STAFF_USERNAME}}
