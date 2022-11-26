@@ -20,6 +20,8 @@ gunicorn = "*"
 markdown = "*"
 pyyaml = "*"
 whitenoise = "*"
+django-csp = "*"
+django-permissions-policy = "*"
 
 [dev-packages]
 autopep8 = "*"
