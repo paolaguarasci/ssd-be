@@ -14,6 +14,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'username', 'loans', 'loansInsert']
 
+
 class DressSerializers(serializers.ModelSerializer):
 
     class Meta:
@@ -30,6 +31,3 @@ class DressLoanSerializers(serializers.ModelSerializer):
 
     def create(self, validated_data):
         return DressLoan.objects.create(**validated_data)
-
-
-

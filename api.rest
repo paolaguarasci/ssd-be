@@ -114,8 +114,6 @@ Authorization: Bearer {{authToken}}
   "endDate": "2022-12-12",
   "dress": "28bce53b-6c7e-478b-ab85-a5f2066a5278",
   "loaner": 2,
-  "totalPrice": 800.0,
-  "loanDurationDays": 16,
   "insertBy": 1
 }
 
