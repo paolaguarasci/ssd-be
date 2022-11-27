@@ -148,8 +148,8 @@ SIMPLE_JWT = {
 }
 
 CSP_DEFAULT_SRC = ("'self'",)
-CSP_STYLE_SRC = ("'self'", "'unsafe-hashes'","'sha256-K2w4m0VrJ+Njhv782hiCwTin5ttpnXcFkRWtCuqj5wQ='",)
-CSP_SCRIPT_SRC = ("'self'", "'sha256-32kCxEKEhw5ijk9Z1BqnaWdIV9k3ylVSEKWa0WjsD84='",)
+CSP_STYLE_SRC = ("'self'", "'unsafe-hashes'","'sha256-K2w4m0VrJ+Njhv782hiCwTin5ttpnXcFkRWtCuqj5wQ='", "'sha256-e+Z0n8P0IwqIce2RMye3/p5TaNb2k/QdJT4urKCsrwk='", "'sha256-matwEc6givhWX0+jiSfM1+E5UMk8/UGLdl902bjFBmY='",)
+CSP_SCRIPT_SRC = ("'self'", "'sha256-32kCxEKEhw5ijk9Z1BqnaWdIV9k3ylVSEKWa0WjsD84='", "'sha256-ePV7kFzLKGlmkhWH4rl6tjfyIaDFdhcVl94RuR2nQvA='", "'sha256-IYBrMxCTJ62EwagLTIRncEIpWwTmoXcXkqv3KZm/Wik='",)
 CSP_IMG_SRC = ("'self'",)
 CSP_FONT_SRC = ("'self'", )
 CSP_CONNECT_SRC = ("'self'",)
