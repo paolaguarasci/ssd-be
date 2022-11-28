@@ -56,7 +56,7 @@ Content-Type: application/json
 
 ### 
 GET {{host}}/api/v1/dress/
-Authorization: Bearer {{authToken}}
+# Authorization: Bearer {{authToken}}
 
 ### 
 GET {{host}}/api/v1/dress/28bce53b-6c7e-478b-ab85-a5f2066a5278
