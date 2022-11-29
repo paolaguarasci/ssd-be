@@ -3,6 +3,10 @@ from django.urls import path
 from api.apis import (DressDetail, DressList, DressLoanDetail, DressLoanList,
                       UserDetail, UserList)
 
+
+
+
+
 urlpatterns = [
     path('dress/<uuid:id>', DressDetail.as_view(), name='dress-detail'),
     path('dress/', DressList.as_view(), name='dress-list'),
