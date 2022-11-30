@@ -56,7 +56,7 @@ Content-Type: application/json
 
 ### 
 GET {{host}}/api/v1/dress/
-# Authorization: Bearer {{authToken}}
+Authorization: Bearer {{authToken}}
 
 ### 
 GET {{host}}/api/v1/dress/28bce53b-6c7e-478b-ab85-a5f2066a5278
@@ -68,11 +68,11 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "brand": 2,
-  "priceInCents": 5000,
-  "material": 2,
-  "color": 5,
-  "size": 42
+  "brand": "GUCCI",
+  "priceInCents": 10000,
+  "material": "COTTON",
+  "color": "RED",
+  "size": 48
 }
 
 ### 

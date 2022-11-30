@@ -12,29 +12,29 @@ from api.validators import descriptionValidator, startDateValidator
 
 class Dress(models.Model):
     MATERIALS = (
-        (0, 'WOOL'),
-        (1, 'SILK'),
-        (2, 'COTTON'))
+        ('WOOL', 'WOOL'),
+        ('SILK', 'SILK'),
+        ('COTTON', 'COTTON'))
 
     BRANDS = (
-        (0, 'GUCCI'),
-        (1, 'ARMANI'),
-        (2, 'VALENTINO'))
+        ('GUCCI', 'GUCCI'),
+        ('ARMANI', 'ARMANI'),
+        ('VALENTINO', 'VALENTINO'))
 
     COLORS = (
-        (0, 'BLACK'),
-        (1, 'BLUE'),
-        (2, 'WHITE'),
-        (3, 'RED'),
-        (4, 'PINK'),
-        (5, 'GRAY'))
+        ('BLACK', 'BLACK'),
+        ('BLUE', 'BLUE'),
+        ('WHITE', 'WHITE'),
+        ('RED', 'RED'),
+        ('PINK', 'PINK'),
+        ('GRAY', 'GRAY'))
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    brand = models.IntegerField(choices=BRANDS)
+    brand = models.CharField(choices=BRANDS, max_length = 15)
     priceInCents = models.IntegerField(validators=[MinValueValidator(1000),
                                                    MaxValueValidator(1000000)])
-    material = models.IntegerField(choices=MATERIALS)
-    color = models.IntegerField(choices=COLORS)
+    material = models.CharField(choices=MATERIALS, max_length = 15)
+    color = models.CharField(choices=COLORS, max_length = 15)
     size = models.IntegerField(validators=[MinValueValidator(38),
                                            MaxValueValidator(60), StepValueValidator(2)])
     description = models.TextField(max_length=100, validators=[
