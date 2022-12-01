@@ -18,7 +18,7 @@ class UserSerializer(serializers.ModelSerializer):
 class DressSerializers(serializers.ModelSerializer):
 
     class Meta:
-        fields = ('id', 'brand', 'priceInCents', 'material', 'color', 'size')
+        fields = ('id', 'dressStatus', 'brand', 'priceInCents', 'material', 'color', 'size')
         model = Dress
 
 
