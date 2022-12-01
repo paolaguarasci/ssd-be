@@ -39,10 +39,19 @@ class Dress(models.Model):
                                            MaxValueValidator(60), StepValueValidator(2)])
     description = models.TextField(max_length=100, validators=[
                                    descriptionValidator, RegexValidator(r'^[A-Za-z0-9 .,_-]*$', message="Description must be write using allowed chars (A-Za-z0-9 .,_-)")])
+    dressStatus = models.BooleanField(default=True)
+
+    def delete(self, *args, **kwargs):
+        self.dressStatus = False
+        self.save()
+        #super(Dress, self).delete(*args, **kwargs)
+
+
 
 
 def getTomorrow():
     return date.today()+timedelta(days=1)
+
 
 
 class DressLoan(models.Model):
@@ -73,3 +82,12 @@ class DressLoan(models.Model):
     def save(self, *args, **kwargs):
         self._validate_start_end_dates()
         return super().save(*args, **kwargs)
+
+
+# class DressStatus():
+#     available = False
+
+#     def setAvailable(self):
+#         self.available = True
+#     def setUnAvailable(self):
+#         self.available = False
