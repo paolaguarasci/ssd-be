@@ -8,7 +8,7 @@ from django.core.validators import (MaxValueValidator, MinValueValidator,
 from django.db import models
 
 from api.validators import descriptionValidator, startDateValidator
-
+from django.db.models import Q
 
 class Dress(models.Model):
     MATERIALS = (
@@ -44,7 +44,7 @@ class Dress(models.Model):
     def delete(self, *args, **kwargs):
         self.dressStatus = False
         self.save()
-        #super(Dress, self).delete(*args, **kwargs)
+ 
 
 
 
@@ -64,6 +64,7 @@ class DressLoan(models.Model):
         get_user_model(), on_delete=models.CASCADE, related_name='loans')
     insertBy = models.ForeignKey(
         get_user_model(), on_delete=models.CASCADE, related_name='loansInsert')
+    terminated = models.BooleanField(default=False)
 
     @property
     def totalPrice(self):
@@ -81,13 +82,21 @@ class DressLoan(models.Model):
 
     def save(self, *args, **kwargs):
         self._validate_start_end_dates()
+        dress1 = Dress.objects.filter(id=self.dress.id)
+        print(dress1)
+        print(type(dress1))
+        obj = DressLoan.objects.filter(Q(dress=dress1.first()) & Q(terminated=False))
+        if obj is None:
+            return super().save(*args, **kwargs)
+        for loan in obj:
+            if loan.startDate <= self.startDate and loan.endDate >= self.startDate:
+                raise ValidationError("Vestito gia noleggiato")
+            elif loan.startDate <= self.endDate and loan.endDate >= self.endDate:
+                raise ValidationError("Vestito gia noleggiato")
         return super().save(*args, **kwargs)
 
 
-# class DressStatus():
-#     available = False
 
-#     def setAvailable(self):
-#         self.available = True
-#     def setUnAvailable(self):
-#         self.available = False
+    def delete(self, *args, **kwargs):
+        self.terminated = True
+        self.save()

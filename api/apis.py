@@ -9,7 +9,7 @@ from api.models import Dress, DressLoan
 from api.serializers import (DressLoanSerializers, DressSerializers,
                              UserSerializer)
 
-
+from django.db.models import Q
 class DressList(generics.ListCreateAPIView):
     queryset = Dress.objects.all()
     serializer_class = DressSerializers
