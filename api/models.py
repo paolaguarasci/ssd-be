@@ -6,9 +6,10 @@ from django.core.exceptions import ValidationError
 from django.core.validators import (MaxValueValidator, MinValueValidator,
                                     RegexValidator, StepValueValidator)
 from django.db import models
+from django.db.models import Q
 
 from api.validators import descriptionValidator, startDateValidator
-from django.db.models import Q
+
 
 class Dress(models.Model):
     MATERIALS = (
@@ -39,10 +40,10 @@ class Dress(models.Model):
                                            MaxValueValidator(60), StepValueValidator(2)])
     description = models.TextField(max_length=100, validators=[
                                    descriptionValidator, RegexValidator(r'^[A-Za-z0-9 .,_-]*$', message="Description must be write using allowed chars (A-Za-z0-9 .,_-)")])
-    dressStatus = models.BooleanField(default=True)
+    deleted = models.BooleanField(default=False)
 
     def delete(self, *args, **kwargs):
-        self.dressStatus = False
+        self.deleted = True
         self.save()
  
 
@@ -83,19 +84,15 @@ class DressLoan(models.Model):
     def save(self, *args, **kwargs):
         self._validate_start_end_dates()
         dress1 = Dress.objects.filter(id=self.dress.id)
-        print(dress1)
-        print(type(dress1))
         obj = DressLoan.objects.filter(Q(dress=dress1.first()) & Q(terminated=False))
-        if obj is None:
+        if len(obj) == 0:
             return super().save(*args, **kwargs)
         for loan in obj:
-            if loan.startDate <= self.startDate and loan.endDate >= self.startDate:
+            if loan.id != self.id and (loan.startDate <= self.startDate and loan.endDate >= self.startDate):
                 raise ValidationError("Vestito gia noleggiato")
-            elif loan.startDate <= self.endDate and loan.endDate >= self.endDate:
+            elif loan.id != self.id and (loan.startDate <= self.endDate and loan.endDate >= self.endDate):
                 raise ValidationError("Vestito gia noleggiato")
         return super().save(*args, **kwargs)
-
-
 
     def delete(self, *args, **kwargs):
         self.terminated = True

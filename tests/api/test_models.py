@@ -2,6 +2,8 @@ import pytest
 from django.core.exceptions import ValidationError
 from mixer.backend.django import mixer
 
+from api.models import Dress, DressLoan
+
 
 def tests_dress_description_should_be_at_most_100_chars_lenght(db):
     with pytest.raises(ValidationError) as err:
@@ -57,6 +59,27 @@ def test_dress_price_should_be_less_than_1000000(db):
         dress.full_clean()
     assert 'is less than or equal to 1000000' in '\n'.join(err.value.messages)
 
+
+def test_dress_deleted_false_by_default(db):
+    dress = mixer.blend('api.Dress')
+    assert dress.deleted == False
+
+def test_dress_deleted_true(db):
+    dress = mixer.blend('api.Dress')
+    Dress.delete(dress)
+    assert dress.deleted == True
+
+def test_dressLoan_terminate_false_by_default(db):
+    d = mixer.blend('api.Dress')
+    dressLoan = mixer.blend('api.DressLoan', dress=d)
+    assert dressLoan.terminated == False
+
+def test_dressLoan_terminate_true(db):
+    dressLoan = mixer.blend('api.DressLoan')
+    DressLoan.delete(dressLoan)
+    assert dressLoan.terminated == True
+
+
 def test_loans_start_date_must_be_in_present(db):
     with pytest.raises(ValidationError) as err:
         dress = mixer.blend('api.DressLoan', startDate='2022-10-10')
@@ -76,58 +99,63 @@ def test_loans_end_date_must_be_after_start_date(db):
 
 def test_loans_total_price_must_be_equals_to_day_for_price(db):
     dressLoan = mixer.blend('api.DressLoan')
+    dressLoan.full_clean()
     days = (dressLoan.endDate - dressLoan.startDate).days
     assert dressLoan.totalPrice == (days * dressLoan.dress.priceInCents) / 100
 
 def test_loan_duration_must_be_equals_to_difference_beetwen_end_date_and_start_date(db):
     dressLoan = mixer.blend('api.DressLoan')
+    dressLoan.full_clean()
     days = (dressLoan.endDate - dressLoan.startDate).days
     assert dressLoan.loanDurationDays == days
 
-    
-
-# def test_dress_color_should_be_in_colors_enum(db):
-#     with pytest.raises(ValidationError) as err:
-#         dress = mixer.blend('api.Dress', color=)
-#         dress.full_clean()
-#     assert 'is less than or equal to 60' in '\n'.join(err.value.messages)
-
-# def test_dress_author_should_be_valid_string(db):
-#     with pytest.raises(ValidationError) as err:
-#         dress = mixer.blend('api.Dress', author='sadASAS#$$#$%')
-#         dress.full_clean()
-#     assert 'Dress author must be a valid string' in '\n'.join(err.value.messages)
-
-# def test_dress_author_of_lenght_0_raises_exception(db):
-#     with pytest.raises(ValidationError) as err:
-#         dress = mixer.blend('api.Dress', author='')
-#         dress.full_clean()
-#     assert 'This field cannot be blank' in '\n'.join(err.value.messages)
+def test_try_to_loan_alredy_loaned_dress_same_period(db):
+    dressLoan1 = mixer.blend('api.DressLoan', startDate='2022-12-10', endDate='2022-12-12')
+    with pytest.raises(ValidationError) as err:
+        dressLoan2 = mixer.blend('api.DressLoan', dress=dressLoan1.dress, startDate='2022-12-10', endDate='2022-12-12')
+        dressLoan1.full_clean()
+        dressLoan2.full_clean()
+    assert 'Vestito gia noleggiato' in '\n'.join(
+        err.value.messages)
 
 
-# def test_dress_year_blank_raises_exception(db):
-#     with pytest.raises(ValidationError) as err:
-#         dress = mixer.blend('api.Dress', year='')
-#         dress.full_clean()
-#     assert 'value must be an integer' in '\n'.join(err.value.messages)
+def test_try_to_loan_alredy_loaned_dress_overlap_startdate(db):
+    dressLoan1 = mixer.blend('api.DressLoan', startDate='2022-12-10', endDate='2022-12-12')
+    with pytest.raises(ValidationError) as err:
+        dressLoan2 = mixer.blend('api.DressLoan', dress=dressLoan1.dress, startDate='2022-12-11', endDate='2022-12-14')
+        dressLoan1.full_clean()
+        dressLoan2.full_clean()
+    assert 'Vestito gia noleggiato' in '\n'.join(
+        err.value.messages)
 
+def test_try_to_loan_alredy_loaned_dress_overlap_enddate(db):
+    dressLoan1 = mixer.blend('api.DressLoan', startDate='2022-12-10', endDate='2022-12-12')
+    with pytest.raises(ValidationError) as err:
+        dressLoan2 = mixer.blend('api.DressLoan', dress=dressLoan1.dress, startDate='2022-12-07', endDate='2022-12-11')
+        dressLoan1.full_clean()
+        dressLoan2.full_clean()
+    assert 'Vestito gia noleggiato' in '\n'.join(
+        err.value.messages)
 
-# def test_dress_year_min_1200_raises_exception(db):
-#     with pytest.raises(ValidationError) as err:
-#         dress = mixer.blend('api.Dress', year=1199)
-#         dress.full_clean()
-#     assert 'greater than or equal to 1200' in '\n'.join(err.value.messages)
+def test_try_to_loan_alredy_loaned_dress_no_overlap(db):
+    dressLoan1 = mixer.blend('api.DressLoan', startDate='2022-12-10', endDate='2022-12-12')
+    dressLoan2 = mixer.blend('api.DressLoan', dress=dressLoan1.dress, startDate='2022-12-7', endDate='2022-12-9')
+    dressLoan1.full_clean()
+    dressLoan2.full_clean()
+    assert dressLoan1.id != dressLoan2.id
 
+def test_try_to_loan_never_loaned(db):
+    dressLoan = mixer.blend('api.DressLoan', startDate='2022-12-10', endDate='2022-12-12')
+    dressLoan.full_clean()
+    assert dressLoan.id 
 
-# def test_dress_year_over_2050_raises_exception(db):
-#     with pytest.raises(ValidationError) as err:
-#         dress = mixer.blend('api.Dress', year=2051)
-#         dress.full_clean()
-#     assert 'less than or equal to 2050' in '\n'.join(err.value.messages)
-
-# def test_dressloan_loaner_should_a_valid_user(db):
-#     with pytest.raises(ValidationError) as err:
-#         dress = mixer.blend('api.DressLoan', loaner=1)
-#         dress.full_clean()
-#     print(err.value)
-#     assert 'must be a "User" instance' in '\n'.join(err.value.messages)
+def test_try_to_update_whit_alredy_loan_dress(db):
+    dress1 = mixer.blend('api.Dress')
+    dress2 = mixer.blend('api.Dress')
+    dressLoan1 = mixer.blend('api.DressLoan', dress=dress1, startDate='2022-12-10', endDate='2022-12-12')
+    dressLoan2 = mixer.blend('api.DressLoan', dress=dress2, startDate='2022-12-10', endDate='2022-12-12')
+    with pytest.raises(ValidationError) as err:
+        dressLoan2.dress = dress1
+        dressLoan2.save()
+    assert 'Vestito gia noleggiato' in '\n'.join(
+        err.value.messages)
