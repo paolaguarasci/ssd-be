@@ -8,7 +8,16 @@ from django.core.validators import (MaxValueValidator, MinValueValidator,
 from django.db import models
 from django.db.models import Q
 
-from api.validators import descriptionValidator, startDateValidator
+from api.validators import descriptionSizeValidator, startDateValidator
+
+
+MIN_SIZE = 38
+MAX_SIZE = 60
+MIN_PRICE_IN_CENT = 1000
+MAX_PRICE_IN_CENT = 1000000
+REGEX_DESCRIPTION = "^[A-Za-z0-9 .,_-]*$"
+ERROR_DESCRIPTION_CHARAPTER_NOT_ALLOWED = "Description must be write using allowed chars (A-Za-z0-9 .,_-)"
+ERROR_DESCRIPTION_ENDDATE_BEFORE_STARTDATE = "End date cannot be before start date."
 
 
 class Dress(models.Model):
@@ -31,15 +40,15 @@ class Dress(models.Model):
         ('GRAY', 'GRAY'))
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    brand = models.CharField(choices=BRANDS, max_length = 15)
-    priceInCents = models.IntegerField(validators=[MinValueValidator(1000),
-                                                   MaxValueValidator(1000000)])
-    material = models.CharField(choices=MATERIALS, max_length = 15)
-    color = models.CharField(choices=COLORS, max_length = 15)
-    size = models.IntegerField(validators=[MinValueValidator(38),
-                                           MaxValueValidator(60), StepValueValidator(2)])
+    brand = models.IntegerField(choices=BRANDS)
+    priceInCents = models.IntegerField(validators=[MinValueValidator(MIN_PRICE_IN_CENT),
+                                                   MaxValueValidator(MAX_PRICE_IN_CENT)])
+    material = models.IntegerField(choices=MATERIALS)
+    color = models.IntegerField(choices=COLORS)
+    size = models.IntegerField(validators=[MinValueValidator(MIN_SIZE),
+                                           MaxValueValidator(MAX_SIZE), StepValueValidator(2)])
     description = models.TextField(max_length=100, validators=[
-                                   descriptionValidator, RegexValidator(r'^[A-Za-z0-9 .,_-]*$', message="Description must be write using allowed chars (A-Za-z0-9 .,_-)")])
+                                   descriptionSizeValidator, RegexValidator(f'{REGEX_DESCRIPTION}', message=f"{ERROR_DESCRIPTION_CHARAPTER_NOT_ALLOWED}")])
     deleted = models.BooleanField(default=False)
 
     def delete(self, *args, **kwargs):
