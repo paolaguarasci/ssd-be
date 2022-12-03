@@ -9,16 +9,17 @@ class UserSerializer(serializers.ModelSerializer):
         many=True, queryset=DressLoan.objects.all())
     loansInsert = serializers.PrimaryKeyRelatedField(
         many=True, queryset=DressLoan.objects.all())
-
+    
     class Meta:
         model = User
-        fields = ['id', 'username', 'loans', 'loansInsert']
+        fields = ['id', 'username', 'loans', 'loansInsert', 'groups']
 
 
 class DressSerializers(serializers.ModelSerializer):
 
     class Meta:
-        fields = ('id', 'brand', 'priceInCents', 'material', 'color', 'size', 'deleted')
+        fields = ('id', 'brand', 'priceInCents',
+                  'material', 'color', 'size', 'deleted')
         model = Dress
 
 
