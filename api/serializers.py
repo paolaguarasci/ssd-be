@@ -9,7 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
         many=True, queryset=DressLoan.objects.all())
     loansInsert = serializers.PrimaryKeyRelatedField(
         many=True, queryset=DressLoan.objects.all())
-    
+
     class Meta:
         model = User
         fields = ['id', 'username', 'loans', 'loansInsert', 'groups']
@@ -26,8 +26,9 @@ class DressSerializers(serializers.ModelSerializer):
 class DressLoanSerializers(serializers.ModelSerializer):
     class Meta:
         fields = ('id', 'startDate', 'endDate', 'dress', 'loaner',
-                  'totalPrice', 'loanDurationDays', 'insertBy')
+                  'totalPrice', 'loanDurationDays', 'insertBy', 'terminated')
         model = DressLoan
+        read_only_fields = ['insertBy']
         # depth = 1
 
     # def create(self, validated_data):

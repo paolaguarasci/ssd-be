@@ -58,8 +58,9 @@ Content-Type: application/json
 GET {{host}}/api/v1/dress/
 Authorization: Bearer {{authToken}}
 
+
 ### 
-GET {{host}}/api/v1/dress/28bce53b-6c7e-478b-ab85-a5f2066a5278
+GET {{host}}/api/v1/dress/c2f8f8f7-933d-44c5-ac2a-3a1116b9a177
 Authorization: Bearer {{authToken}}
 
 ###
@@ -68,7 +69,7 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "brand": "GUCCI",
+  "brand": "GUCCIsss",
   "priceInCents": 10000,
   "material": "COTTON",
   "color": "RED",
@@ -82,7 +83,7 @@ Authorization: Bearer {{authToken}}
 
 {
   "id": "28bce53b-6c7e-478b-ab85-a5f2066a5278",
-  "brand": "ARMANI",
+  "brand": "ARMANIsss",
   "priceInCents": 5000,
   "material": "WOOL",
   "color": "BLACK",
@@ -90,7 +91,7 @@ Authorization: Bearer {{authToken}}
 }
 
 ###
-DELETE {{host}}/api/v1/dress/7b1e3847-d5f9-4daa-ae34-8c2a15144cb8
+DELETE {{host}}/api/v1/dress/c2f8f8f7-933d-44c5-ac2a-3a1116b9a177
 Authorization: Bearer {{authToken}}
 
 
@@ -110,31 +111,30 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 { 
-  "startDate": "2022-11-26",
-  "endDate": "2022-12-12",
-  "dress": "28bce53b-6c7e-478b-ab85-a5f2066a5278",
-  "loaner": 2,
-  "insertBy": 1
+  "startDate": "2022-12-17",
+  "endDate": "2022-12-16",
+  "dress": "54416218-701a-4826-a0ad-9fb40348d802",
+  "loaner": 2
 }
 
 ### 
-PUT {{host}}/api/v1/loan/5f9c17cd-ff58-438c-8b89-e97631039f1a
+PUT {{host}}/api/v1/loan/7cf29491-de36-4585-bab2-590f25dd7b05
 Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
 {
-  "id": "fe5663e9-61ef-486e-b5a1-d7b8a3c77e9d",
-  "startDate": "2022-11-26",
-  "endDate": "2022-12-13",
-  "dress": "28bce53b-6c7e-478b-ab85-a5f2066a5278",
+  "id": "7cf29491-de36-4585-bab2-590f25dd7b05",
+  "startDate": "2022-12-05",
+  "endDate": "2022-12-10",
+  "dress": "fba6e9a1-1161-4b97-9a34-e474254bb0d8",
   "loaner": 2,
-  "totalPrice": 800.0,
-  "loanDurationDays": 17,
-  "insertBy": 1
+  "totalPrice": 700.0,
+  "loanDurationDays": 7,
+  "terminated": false
 }
 
 ###
-DELETE {{host}}/api/v1/loan/b3819e83-1863-49a2-8871-02acb2eae79d
+DELETE {{host}}/api/v1/loan/a596a0b8-4a07-49df-8885-e41f3c99b8a8
 Authorization: Bearer {{authToken}}
 
 #### USER ######

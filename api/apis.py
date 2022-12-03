@@ -1,20 +1,30 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import Group, User
+from django.core.exceptions import ValidationError
 from django.db.models import Q
 from django.shortcuts import render
-from rest_framework import generics
+from rest_framework import generics, serializers
 from rest_framework.permissions import (DjangoModelPermissions, IsAdminUser,
                                         IsAuthenticated)
+from rest_framework.response import Response
 
 from api.models import Dress, DressLoan
 from api.serializers import (DressLoanSerializers, DressSerializers,
                              UserSerializer)
 
-from django.db.models import Q
+
 class DressList(generics.ListCreateAPIView):
     queryset = Dress.objects.all()
     serializer_class = DressSerializers
     permission_classes = [DjangoModelPermissions]
     lookup_field = "id"
+
+    def get_queryset(self):
+        userDB = User.objects.get(username=self.request.user)
+        userGroupList = list(userDB.groups.values_list('name',flat = True))
+        if self.request.user.is_superuser or "commessi" in userGroupList:
+            return Dress.objects.all()
+        return Dress.objects.filter(Q(deleted=False))
+
 
 class DressDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Dress.objects.all()
@@ -22,6 +32,12 @@ class DressDetail(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = "id"
     permission_classes = [DjangoModelPermissions]
 
+    def get_queryset(self):
+        userDB = User.objects.get(username=self.request.user)
+        userGroupList = list(userDB.groups.values_list('name',flat = True))
+        if self.request.user.is_superuser or "commessi" in userGroupList:
+            return Dress.objects.all()
+        return Dress.objects.filter(Q(deleted=False))
 
 class DressLoanList(generics.ListCreateAPIView):
     queryset = DressLoan.objects.all()
@@ -30,12 +46,23 @@ class DressLoanList(generics.ListCreateAPIView):
     lookup_field = "id"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
+        userDB = User.objects.get(username=self.request.user)
+        userGroupList = list(userDB.groups.values_list('name',flat = True))
+        if self.request.user.is_superuser or "commessi" in userGroupList:
             return DressLoan.objects.all()
         return DressLoan.objects.filter(Q(insertBy=self.request.user) | Q(loaner=self.request.user))
 
     def perform_create(self, serializer):
-        serializer.save(insertBy=self.request.user)
+        userDB = User.objects.get(username=self.request.user)
+        group = Group.objects.get(name="user")
+        try:
+            if (group in userDB.groups.all()):
+                serializer.save(insertBy=self.request.user, loaner=self.request.user)
+            else:
+                serializer.save(insertBy=self.request.user)
+        except ValidationError:
+            raise serializers.ValidationError({'detail': 'Dress already loan'}, code=400)
+
 
 
 class DressLoanDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -45,10 +72,11 @@ class DressLoanDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [DjangoModelPermissions]
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
+        userDB = User.objects.get(username=self.request.user)
+        userGroupList = list(userDB.groups.values_list('name',flat = True))
+        if self.request.user.is_superuser or "commessi" in userGroupList:
             return DressLoan.objects.all()
-        return DressLoan.objects.filter(Q(insertBy=self.request.user) | Q(loaner=self.request.user))
-        
+        return DressLoan.objects.filter(Q(loaner=self.request.user))
 
 
 class UserList(generics.ListAPIView):

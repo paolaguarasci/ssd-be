@@ -91,7 +91,7 @@ class Migration(migrations.Migration):
                     models.TextField(
                         max_length=100,
                         validators=[
-                            api.validators.descriptionValidator,
+                            api.validators.descriptionSizeValidator,
                             django.core.validators.RegexValidator(
                                 "^[A-Za-z0-9 .,_-]*$",
                                 message="Description must be write using allowed chars (A-Za-z0-9 .,_-)",
