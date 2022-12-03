@@ -82,15 +82,15 @@ Authorization: Bearer {{authToken}}
 
 {
   "id": "28bce53b-6c7e-478b-ab85-a5f2066a5278",
-  "brand": 1,
+  "brand": "ARMANI",
   "priceInCents": 5000,
-  "material": 2,
-  "color": 5,
+  "material": "WOOL",
+  "color": "BLACK",
   "size": 42
 }
 
 ###
-DELETE {{host}}/api/v1/dress/f51dafc6-4f40-4670-aa39-1920c80289b6
+DELETE {{host}}/api/v1/dress/7b1e3847-d5f9-4daa-ae34-8c2a15144cb8
 Authorization: Bearer {{authToken}}
 
 
