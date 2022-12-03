@@ -11,5 +11,3 @@ con Nginx configurato per un proxypass 443:8000
 ```shell
 pipenv run prod
 ```
-
-ss
