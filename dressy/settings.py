@@ -27,16 +27,17 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "dressy.middlewares.SecurityHeadersMiddleware",
     'whitenoise.middleware.WhiteNoiseMiddleware',
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
-    "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "csp.middleware.CSPMiddleware",
     "django_permissions_policy.PermissionsPolicyMiddleware",
+    "django.middleware.common.CommonMiddleware",
 ]
 
 CORS_ORIGIN_WHITELIST = [os.getenv('ADDRESS', 'localhost'),
@@ -154,8 +155,10 @@ SIMPLE_JWT = {
 }
 
 CSP_DEFAULT_SRC = ("'self'",)
-CSP_STYLE_SRC = ("'self'", "'unsafe-hashes'","'sha256-K2w4m0VrJ+Njhv782hiCwTin5ttpnXcFkRWtCuqj5wQ='",)
-CSP_SCRIPT_SRC = ("'self'", "'sha256-32kCxEKEhw5ijk9Z1BqnaWdIV9k3ylVSEKWa0WjsD84='",)
+CSP_STYLE_SRC = ("'self'", "'unsafe-hashes'", "'sha256-K2w4m0VrJ+Njhv782hiCwTin5ttpnXcFkRWtCuqj5wQ='",
+                 "'sha256-e+Z0n8P0IwqIce2RMye3/p5TaNb2k/QdJT4urKCsrwk='", "'sha256-matwEc6givhWX0+jiSfM1+E5UMk8/UGLdl902bjFBmY='",)
+CSP_SCRIPT_SRC = ("'self'", "'sha256-32kCxEKEhw5ijk9Z1BqnaWdIV9k3ylVSEKWa0WjsD84='", "'sha256-ePV7kFzLKGlmkhWH4rl6tjfyIaDFdhcVl94RuR2nQvA='",
+                  "'sha256-IYBrMxCTJ62EwagLTIRncEIpWwTmoXcXkqv3KZm/Wik='", "'sha256-d0nfzeuVKVmFOtfWTGfice7YDOLgJyK2RVDW2DKvepM='",)
 CSP_IMG_SRC = ("'self'",)
 CSP_FONT_SRC = ("'self'", )
 CSP_CONNECT_SRC = ("'self'",)

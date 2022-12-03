@@ -27,12 +27,3 @@ con Nginx configurato per un proxypass 443:8000
 ```shell
 pipenv run prod
 ```
-
-# Requirements
-
-- [x] Setup git repositories
-- [x] Setup Django REST Framework with CORS and documentation
-- [x] Define at least one model (don’t overdo)
-- [x] Expose your models with your API in a proper way (validate incoming data)
-- [x] Implement authentication and authorization in a proper way
-- [x] Test the back-end (coverage of your code >90%)
