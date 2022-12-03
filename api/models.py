@@ -10,9 +10,9 @@ from django.db.models import Q
 
 from api.validators import descriptionSizeValidator, startDateValidator
 
-
 MIN_SIZE = 38
 MAX_SIZE = 60
+MAX_CHARS_FIELD_LEN = 15
 MIN_PRICE_IN_CENT = 1000
 MAX_PRICE_IN_CENT = 1000000
 REGEX_DESCRIPTION = "^[A-Za-z0-9 .,_-]*$"
@@ -40,11 +40,11 @@ class Dress(models.Model):
         ('GRAY', 'GRAY'))
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    brand = models.IntegerField(choices=BRANDS)
+    brand = models.CharField(choices=BRANDS, max_length = MAX_CHARS_FIELD_LEN)
     priceInCents = models.IntegerField(validators=[MinValueValidator(MIN_PRICE_IN_CENT),
                                                    MaxValueValidator(MAX_PRICE_IN_CENT)])
-    material = models.IntegerField(choices=MATERIALS)
-    color = models.IntegerField(choices=COLORS)
+    material = models.CharField(choices=MATERIALS, max_length = MAX_CHARS_FIELD_LEN)
+    color = models.CharField(choices=COLORS, max_length = MAX_CHARS_FIELD_LEN)
     size = models.IntegerField(validators=[MinValueValidator(MIN_SIZE),
                                            MaxValueValidator(MAX_SIZE), StepValueValidator(2)])
     description = models.TextField(max_length=100, validators=[

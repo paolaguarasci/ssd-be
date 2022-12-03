@@ -11,7 +11,8 @@ class DressAdmin(admin.ModelAdmin):
         'priceInCents',
         'material',
         'color',
-        'size'
+        'size',
+        'deleted'
     )
 
 
@@ -24,7 +25,8 @@ class DressLoanAdmin(admin.ModelAdmin):
         'loaner',
         'totalPrice_Euro',
         'loanDurationDays',
-        'insertBy'
+        'insertBy',
+        'terminated'
     )
 
     @admin.display()
