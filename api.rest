@@ -66,7 +66,7 @@ Authorization: Bearer {{authToken}}
 ###
 POST {{host}}/api/v1/dress/
 Content-Type: application/json
-# Authorization: Bearer {{authToken}}
+Authorization: Bearer {{authToken}}
 
 {
   "brand": "GUCCI",
@@ -83,7 +83,7 @@ Authorization: Bearer {{authToken}}
 
 {
   "id": "28bce53b-6c7e-478b-ab85-a5f2066a5278",
-  "brand": "ARMANIsss",
+  "brand": "ARMANI",
   "priceInCents": 5000,
   "material": "WOOL",
   "color": "BLACK",
@@ -178,5 +178,3 @@ Content-Type: application/json
 DELETE {{host}}/api/v1/user/4
 Authorization: Bearer {{authToken}}
 
-###
-GET {{host}}/schema
