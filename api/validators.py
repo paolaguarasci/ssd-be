@@ -2,7 +2,6 @@ from datetime import date, timedelta
 
 from django.core.exceptions import ValidationError
 
-
 """
 Error message list
 """

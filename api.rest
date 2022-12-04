@@ -66,10 +66,10 @@ Authorization: Bearer {{authToken}}
 ###
 POST {{host}}/api/v1/dress/
 Content-Type: application/json
-Authorization: Bearer {{authToken}}
+# Authorization: Bearer {{authToken}}
 
 {
-  "brand": "GUCCIsss",
+  "brand": "GUCCI",
   "priceInCents": 10000,
   "material": "COTTON",
   "color": "RED",
