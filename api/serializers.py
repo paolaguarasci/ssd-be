@@ -19,7 +19,7 @@ class DressSerializers(serializers.ModelSerializer):
 
     class Meta:
         fields = ('id', 'brand', 'priceInCents',
-                  'material', 'color', 'size', 'deleted')
+                  'material', 'color', 'size', 'description','deleted')
         model = Dress
 
 
