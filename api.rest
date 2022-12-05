@@ -60,7 +60,7 @@ Authorization: Bearer {{authToken}}
 
 
 ### 
-GET {{host}}/api/v1/dress/c2f8f8f7-933d-44c5-ac2a-3a1116b9a177
+GET {{host}}/api/v1/dress/28bce53b-6c7e-478b-ab85-a5f2066a5278
 Authorization: Bearer {{authToken}}
 
 ###
@@ -69,26 +69,29 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "brand": "GUCCI",
-  "priceInCents": 10000,
-  "material": "COTTON",
-  "color": "RED",
+  "brandType": "VALENTINO",
+  "priceInCents": 5000,
+  "materialType": "COTTON",
+  "colorType": "GRAY",
   "size": 42,
-  "description": "Fantastico"
+  "description": "ss",
+  "deleted": false
 }
 
 ### 
-PUT {{host}}/api/v1/dress/28bce53b-6c7e-478b-ab85-a5f2066a5278
+PUT {{host}}/api/v1/dress/261ca68e-a392-496b-b07a-1e93dd97d645
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "id": "28bce53b-6c7e-478b-ab85-a5f2066a5278",
-  "brand": "ARMANI",
-  "priceInCents": 5000,
-  "material": "WOOL",
-  "color": "BLACK",
-  "size": 42
+  "id": "261ca68e-a392-496b-b07a-1e93dd97d645",
+  "brandType": "GUCCI",
+  "priceInCents": 8000,
+  "materialType": "COTTON",
+  "colorType": "RED",
+  "size": 48,
+  "description": "sasas",
+  "deleted": false
 }
 
 ###

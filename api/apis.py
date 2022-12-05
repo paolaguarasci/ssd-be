@@ -12,6 +12,11 @@ from api.serializers import (DressLoanSerializers, DressSerializers,
                              UserSerializer)
 
 
+def findIndex(key, enumerativ):
+    for i in enumerativ:
+        if i[1] == key:
+            return i[0]
+
 class DressList(generics.ListCreateAPIView):
     queryset = Dress.objects.all()
     serializer_class = DressSerializers
@@ -24,6 +29,13 @@ class DressList(generics.ListCreateAPIView):
         if self.request.user.is_superuser or "commessi" in userGroupList:
             return Dress.objects.all()
         return Dress.objects.filter(Q(deleted=False))
+
+    def perform_create(self, serializer):
+        brandIndex = findIndex(self.request.data['brandType'], Dress.BRANDS)
+        colorIndex = findIndex(self.request.data['colorType'], Dress.COLORS)
+        materialIndex = findIndex(self.request.data['materialType'], Dress.MATERIALS)
+        serializer.save(brand=brandIndex, material=materialIndex, color=colorIndex)
+        return super().perform_create(serializer)
 
 
 class DressDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -38,6 +50,13 @@ class DressDetail(generics.RetrieveUpdateDestroyAPIView):
         if self.request.user.is_superuser or "commessi" in userGroupList:
             return Dress.objects.all()
         return Dress.objects.filter(Q(deleted=False))
+
+    def perform_update(self, serializer):
+        brandIndex = findIndex(self.request.data['brandType'], Dress.BRANDS)
+        colorIndex = findIndex(self.request.data['colorType'], Dress.COLORS)
+        materialIndex = findIndex(self.request.data['materialType'], Dress.MATERIALS)
+        serializer.save(brand=brandIndex, material=materialIndex, color=colorIndex)
+        return super().perform_update(serializer)
 
 class DressLoanList(generics.ListCreateAPIView):
     queryset = DressLoan.objects.all()

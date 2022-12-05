@@ -72,15 +72,16 @@ def test_dress_commesso_get_single_item(api_client):
 def tests_dress_commesso_can_post(api_client):
     path = reverse('dress-list')
     response = api_client.post(path, {
-        "brand": "ARMANI",
+        "brandType": "ARMANI",
         "priceInCents": 1234,
-        "material": "WOOL",
-        "color": "BLACK",
-        "size": 42
+        "materialType": "WOOL",
+        "colorType": "BLACK",
+        "size": 42,
+        "description": "Ciao"
     }, secure=True)
     print(response.data)
     assert response.status_code == HTTP_201_CREATED
-    assert contains(response, 'brand',
+    assert contains(response, 'brandType',
                     'ARMANI')
 
 
@@ -90,15 +91,16 @@ def tests_dress_commesso_can_put(api_client):
     path = reverse('dress-detail', kwargs={'id': dressID})
     response = api_client.put(path, {
         "id": "28bce53b-6c7e-478b-ab85-a5f2066a5278",
-        "brand": "GUCCI",
-        "priceInCents": 60000,
-        "material": "WOOL",
-        "color": "BLACK",
-        "size": 44
+        "brandType": "ARMANI",
+        "priceInCents": 1234,
+        "materialType": "WOOL",
+        "colorType": "BLACK",
+        "size": 42,
+        "description": "Ciao"
     }, secure=True)
     assert response.status_code == HTTP_200_OK
-    assert contains(response, 'brand',
-                    'GUCCI')
+    assert contains(response, 'brandType',
+                    'ARMANI')
 
 
 @pytest.mark.django_db
