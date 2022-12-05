@@ -22,41 +22,51 @@ ERROR_DESCRIPTION_ENDDATE_BEFORE_STARTDATE = "End date cannot be before start da
 
 class Dress(models.Model):
     MATERIALS = (
-        ('WOOL', 'WOOL'),
-        ('SILK', 'SILK'),
-        ('COTTON', 'COTTON'))
+        (0, 'WOOL'),
+        (1, 'SILK'),
+        (2, 'COTTON'))
 
     BRANDS = (
-        ('GUCCI', 'GUCCI'),
-        ('ARMANI', 'ARMANI'),
-        ('VALENTINO', 'VALENTINO'))
+        (0, 'GUCCI'),
+        (1, 'ARMANI'),
+        (2, 'VALENTINO'))
 
     COLORS = (
-        ('BLACK', 'BLACK'),
-        ('BLUE', 'BLUE'),
-        ('WHITE', 'WHITE'),
-        ('RED', 'RED'),
-        ('PINK', 'PINK'),
-        ('GRAY', 'GRAY'))
+        (0, 'BLACK'),
+        (1, 'BLUE'),
+        (2, 'WHITE'),
+        (3, 'RED'),
+        (4, 'PINK'),
+        (5, 'GRAY'))
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    brand = models.CharField(choices=BRANDS, max_length = MAX_CHARS_FIELD_LEN)
+    brand = models.IntegerField(choices=BRANDS)
     priceInCents = models.IntegerField(validators=[MinValueValidator(MIN_PRICE_IN_CENT),
                                                    MaxValueValidator(MAX_PRICE_IN_CENT)])
-    material = models.CharField(choices=MATERIALS, max_length = MAX_CHARS_FIELD_LEN)
-    color = models.CharField(choices=COLORS, max_length = MAX_CHARS_FIELD_LEN)
+    material = models.IntegerField(choices=MATERIALS)
+    color = models.IntegerField(choices=COLORS)
     size = models.IntegerField(validators=[MinValueValidator(MIN_SIZE),
                                            MaxValueValidator(MAX_SIZE), StepValueValidator(2)])
     description = models.TextField(max_length=100, validators=[
                                    descriptionSizeValidator, RegexValidator(f'{REGEX_DESCRIPTION}', message=f"{ERROR_DESCRIPTION_CHARAPTER_NOT_ALLOWED}")])
     deleted = models.BooleanField(default=False)
 
+    @property
+    def brandType(self):
+        return self.BRANDS[self.brand][1]
+
+    @property
+    def materialType(self):
+        return self.MATERIALS[self.material][1]
+
+    @property
+    def colorType(self):
+        return self.COLORS[self.color][1]
+
     def delete(self, *args, **kwargs):
         self.deleted = True
         self.save()
  
-
-
 
 
 def getTomorrow():
