@@ -97,11 +97,8 @@ def tests_dress_admin_cant_post_alredy_loan_overlap_date(api_client):
     response = api_client.post(path, {
         "startDate": getToday(),
         "endDate": getTodayPlus(3),
-        "dress": "fba6e9a1-1161-4b97-9a34-e474254bb0d8",
-        "loaner": 2,
-        "totalPrice": 700.0,
-        "loanDurationDays": 7,
-        "terminated": "false"
+        "dress": "28bce53b-6c7e-478b-ab85-a5f2066a5278",
+        "loaner": 2
     }, secure=True)
 
     assert response.status_code == HTTP_201_CREATED
@@ -110,11 +107,8 @@ def tests_dress_admin_cant_post_alredy_loan_overlap_date(api_client):
     response = api_client.post(path, {
         "startDate": getToday(),
         "endDate": getTodayPlus(3),
-        "dress": "fba6e9a1-1161-4b97-9a34-e474254bb0d8",
-        "loaner": 2,
-        "totalPrice": 700.0,
-        "loanDurationDays": 7,
-        "terminated": "false"
+        "dress": "28bce53b-6c7e-478b-ab85-a5f2066a5278",
+        "loaner": 2
     }, secure=True)
 
     assert response.status_code == HTTP_400_BAD_REQUEST
