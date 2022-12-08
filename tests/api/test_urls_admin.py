@@ -1,5 +1,6 @@
 import json
 import os
+from datetime import date, timedelta
 
 import pytest
 from django.contrib.auth import get_user_model
@@ -47,7 +48,16 @@ def api_client(django_db_setup):
     print("refresh.access_token", refresh.access_token)
     return client
 
+
+def getToday():
+    return str(date.today())
+
+
+def getTodayPlus(days):
+    return str(date.today()+timedelta(days=days))
+
 ######################### Users               #############################################
+
 
 @pytest.mark.django_db
 def test_admin_get_all_users_list(api_client):
@@ -58,6 +68,7 @@ def test_admin_get_all_users_list(api_client):
     obj = parse(response)
     assert len(obj) == len(user)
 
+
 @pytest.mark.django_db
 def test_user_admin_get_yours(api_client):
     user = User.objects.get(username=os.environ['SUPERUSER_USERNAME'])
@@ -65,6 +76,7 @@ def test_user_admin_get_yours(api_client):
     response = api_client.get(path, secure=True)
     assert response.status_code == HTTP_200_OK
     assert contains(response, 'username', user.username)
+
 
 @pytest.mark.django_db
 def test_user_admin_get_all_details(api_client):
@@ -76,31 +88,34 @@ def test_user_admin_get_all_details(api_client):
 
 ######################### Corner Case - Dress #############################################
 
+
 @pytest.mark.django_db
 def tests_dress_admin_cant_post_alredy_loan_overlap_date(api_client):
+
     path = reverse('dressloan-list')
 
     response = api_client.post(path, {
-        "startDate": "2022-12-05",
-        "endDate": "2022-12-10",
+        "startDate": getToday(),
+        "endDate": getTodayPlus(3),
         "dress": "fba6e9a1-1161-4b97-9a34-e474254bb0d8",
         "loaner": 2,
         "totalPrice": 700.0,
         "loanDurationDays": 7,
         "terminated": "false"
     }, secure=True)
+
     assert response.status_code == HTTP_201_CREATED
-    assert contains(response, 'startDate', '2022-12-05')
+    assert contains(response, 'startDate', getToday())
 
     response = api_client.post(path, {
-        "startDate": "2022-12-05",
-        "endDate": "2022-12-10",
+        "startDate": getToday(),
+        "endDate": getTodayPlus(3),
         "dress": "fba6e9a1-1161-4b97-9a34-e474254bb0d8",
         "loaner": 2,
         "totalPrice": 700.0,
         "loanDurationDays": 7,
         "terminated": "false"
     }, secure=True)
-    
+
     assert response.status_code == HTTP_400_BAD_REQUEST
     assert contains(response, 'detail', 'Dress already loan')

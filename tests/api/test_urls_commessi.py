@@ -1,5 +1,6 @@
 import json
 import os
+from datetime import date, timedelta
 
 import pytest
 from django.contrib.auth import get_user_model
@@ -8,9 +9,9 @@ from django.core.management import call_command
 from django.forms.models import model_to_dict
 from django.urls import reverse
 from mixer.backend.django import mixer
-from rest_framework.status import (HTTP_200_OK, HTTP_201_CREATED, HTTP_404_NOT_FOUND,
+from rest_framework.status import (HTTP_200_OK, HTTP_201_CREATED,
                                    HTTP_204_NO_CONTENT, HTTP_401_UNAUTHORIZED,
-                                   HTTP_403_FORBIDDEN)
+                                   HTTP_403_FORBIDDEN, HTTP_404_NOT_FOUND)
 from rest_framework.test import APIClient
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -46,7 +47,16 @@ def api_client(django_db_setup):
     print("refresh.access_token", refresh.access_token)
     return client
 
+
+def getToday():
+    return str(date.today())
+
+
+def getTodayPlus(days):
+    return str(date.today()+timedelta(days=days))
+
 ######################### Dress    #############################################
+
 
 @pytest.mark.django_db
 def test_dress_commesso_get_all_list(api_client):
@@ -138,17 +148,14 @@ def test_dress_loan_commesso_get_single_item(api_client):
 def tests_dress_loan_commesso_can_post(api_client):
     path = reverse('dressloan-list')
     response = api_client.post(path, {
-        "startDate": "2022-12-05",
-        "endDate": "2022-12-10",
+        "startDate": getToday(),
+        "endDate": getTodayPlus(5),
         "dress": "fba6e9a1-1161-4b97-9a34-e474254bb0d8",
-        "loaner": 2,
-        "totalPrice": 700.0,
-        "loanDurationDays": 7,
-        "terminated": "false"
+        "loaner": 2
     }, secure=True)
     print(response.data)
     assert response.status_code == HTTP_201_CREATED
-    assert contains(response, 'startDate', '2022-12-05')
+    assert contains(response, 'startDate', getToday())
 
 
 @pytest.mark.django_db
@@ -157,8 +164,8 @@ def tests_dress_loan_commesso_can_put(api_client):
     dressLoanID = dressLoans[0].id
     path = reverse('dressloan-detail', kwargs={'id': dressLoanID})
     response = api_client.put(path, {
-        "startDate": "2022-12-05",
-        "endDate": "2022-12-10",
+        "startDate": getToday(),
+        "endDate": getTodayPlus(5),
         "dress": "fba6e9a1-1161-4b97-9a34-e474254bb0d8",
         "loaner": 2,
         "totalPrice": 700.0,
@@ -166,7 +173,7 @@ def tests_dress_loan_commesso_can_put(api_client):
         "terminated": "false"
     }, secure=True)
     assert response.status_code == HTTP_200_OK
-    assert contains(response, 'startDate', "2022-12-05")
+    assert contains(response, 'startDate', getToday())
 
 
 @pytest.mark.django_db
@@ -188,6 +195,7 @@ def test_user_commesso_cant_get_users_list(api_client):
     response = api_client.get(path, secure=True)
     assert response.status_code == HTTP_403_FORBIDDEN
 
+
 @pytest.mark.django_db
 def test_user_commesso_get_yours(api_client):
     user = User.objects.get(username=os.environ['STAFF_USERNAME'])
@@ -195,6 +203,7 @@ def test_user_commesso_get_yours(api_client):
     response = api_client.get(path, secure=True)
     assert response.status_code == HTTP_200_OK
     assert contains(response, 'username', user.username)
+
 
 @pytest.mark.django_db
 def test_user_commesso_get_only_yours(api_client):

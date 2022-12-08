@@ -70,8 +70,8 @@ def test_try_to_loan_alredy_loaned_dress_overlap_enddate(db):
         err.value.messages)
 
 def test_try_to_loan_alredy_loaned_dress_no_overlap(db):
-    dressLoan1 = mixer.blend('api.DressLoan', startDate='2022-12-10', endDate='2022-12-12')
-    dressLoan2 = mixer.blend('api.DressLoan', dress=dressLoan1.dress, startDate='2022-12-7', endDate='2022-12-9')
+    dressLoan1 = mixer.blend('api.DressLoan', startDate='2023-12-10', endDate='2023-12-12')
+    dressLoan2 = mixer.blend('api.DressLoan', dress=dressLoan1.dress, startDate='2023-12-7', endDate='2023-12-9')
     dressLoan1.full_clean()
     dressLoan2.full_clean()
     assert dressLoan1.id != dressLoan2.id
