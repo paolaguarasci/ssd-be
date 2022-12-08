@@ -79,8 +79,8 @@ class DressLoanList(generics.ListCreateAPIView):
                 serializer.save(insertBy=self.request.user, loaner=self.request.user)
             else:
                 serializer.save(insertBy=self.request.user)
-        except ValidationError:
-            raise serializers.ValidationError({'detail': 'Dress already loan'}, code=400)
+        except ValidationError as e:
+            raise serializers.ValidationError({'detail': e.message}, code=400)
 
 
 

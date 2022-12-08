@@ -115,8 +115,8 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 { 
-  "startDate": "2022-12-17",
-  "endDate": "2022-12-16",
+  "startDate": "2022-12-13",
+  "endDate": "2022-12-14",
   "dress": "54416218-701a-4826-a0ad-9fb40348d802",
   "loaner": 2
 }
@@ -138,7 +138,7 @@ Content-Type: application/json
 }
 
 ###
-DELETE {{host}}/api/v1/loan/a596a0b8-4a07-49df-8885-e41f3c99b8a8
+DELETE {{host}}/api/v1/loan/89415baa-1498-4b33-a311-9c7fc25b7167
 Authorization: Bearer {{authToken}}
 
 #### USER ######

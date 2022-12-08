@@ -108,9 +108,9 @@ class DressLoan(models.Model):
             return super().save(*args, **kwargs)
         for loan in obj:
             if loan.id != self.id and (loan.startDate <= self.startDate and loan.endDate >= self.startDate):
-                raise ValidationError("Vestito gia noleggiato")
+                raise ValidationError("Dress already loan")
             elif loan.id != self.id and (loan.startDate <= self.endDate and loan.endDate >= self.endDate):
-                raise ValidationError("Vestito gia noleggiato")
+                raise ValidationError("Dress already loan")
         return super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):

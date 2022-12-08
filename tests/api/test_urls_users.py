@@ -1,5 +1,6 @@
 import json
 import os
+from datetime import date, timedelta
 
 import pytest
 from django.contrib.auth import get_user_model
@@ -45,6 +46,13 @@ def contains(response, key, value):
         return False
     return value in obj[key]
 
+def getToday():
+    return str(date.today())
+
+
+def getTodayPlus(days):
+    return str(date.today()+timedelta(days=days))
+
 
 @pytest.mark.django_db
 def test_dress_user_get_list(api_client):
@@ -89,11 +97,11 @@ def test_user_receives_a_list_with_only_his_loan(api_client):
     assert obj[0]['loaner'] == user.id
 
 @pytest.mark.django_db
-def tests_dress_loan_commesso_can_post(api_client):
+def tests_dress_loan_user_can_post(api_client):
     path = reverse('dressloan-list')
     response = api_client.post(path, {
-        "startDate": "2022-12-05",
-        "endDate": "2022-12-10",
+        "startDate": getToday(),
+        "endDate": getTodayPlus(5),
         "dress": "fba6e9a1-1161-4b97-9a34-e474254bb0d8",
         "loaner": 2,
         "totalPrice": 700.0,
@@ -101,7 +109,7 @@ def tests_dress_loan_commesso_can_post(api_client):
         "terminated": "false"
     }, secure=True)
     assert response.status_code == HTTP_201_CREATED
-    assert contains(response, 'startDate', '2022-12-05')
+    assert contains(response, 'startDate', getToday())
 
 
 @pytest.mark.django_db
