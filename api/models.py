@@ -90,7 +90,7 @@ class DressLoan(models.Model):
     def totalPrice(self):
         totalPrice = self.dress.priceInCents * \
             (self.endDate - self.startDate).days
-        return totalPrice / 100
+        return totalPrice // 100 
 
     @property
     def loanDurationDays(self):
