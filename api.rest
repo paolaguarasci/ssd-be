@@ -74,7 +74,7 @@ Authorization: Bearer {{authToken}}
   "materialType": "COTTON",
   "colorType": "GRAY",
   "size": 42,
-  "description": "ss",
+  "description": "aa",
   "deleted": false
 }
 
@@ -85,7 +85,7 @@ Authorization: Bearer {{authToken}}
 
 {
   "id": "261ca68e-a392-496b-b07a-1e93dd97d645",
-  "brandType": "GUCCI",
+  "brandType": "GUCCaaaI",
   "priceInCents": 8000,
   "materialType": "COTTON",
   "colorType": "RED",
