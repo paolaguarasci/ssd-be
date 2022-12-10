@@ -10,7 +10,7 @@ from django.forms.models import model_to_dict
 from django.urls import reverse
 from mixer.backend.django import mixer
 from rest_framework.status import (HTTP_200_OK, HTTP_201_CREATED,
-                                   HTTP_204_NO_CONTENT, HTTP_401_UNAUTHORIZED,
+                                   HTTP_204_NO_CONTENT, HTTP_401_UNAUTHORIZED, HTTP_400_BAD_REQUEST,
                                    HTTP_403_FORBIDDEN, HTTP_404_NOT_FOUND)
 from rest_framework.test import APIClient
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -94,6 +94,21 @@ def tests_dress_commesso_can_post(api_client):
     assert contains(response, 'brandType',
                     'ARMANI')
 
+@pytest.mark.django_db
+def tests_dress_commesso_can_post_but_wrong_data(api_client):
+    path = reverse('dress-list')
+    response = api_client.post(path, {
+        "brandType": "ARMANIaaa",
+        "priceInCents": 1234,
+        "materialType": "WOOLsss",
+        "colorType": "BLACKsss",
+        "size": 42,
+        "description": "Ciao"
+    }, secure=True)
+    print(response.data)
+    assert response.status_code == HTTP_400_BAD_REQUEST
+    assert contains(response, 'detail',
+                    'NOT NULL constraint failed')
 
 @pytest.mark.django_db
 def tests_dress_commesso_can_put(api_client):

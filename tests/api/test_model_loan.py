@@ -34,7 +34,7 @@ def test_loans_total_price_must_be_equals_to_day_for_price(db):
     dressLoan = mixer.blend('api.DressLoan')
     dressLoan.full_clean()
     days = (dressLoan.endDate - dressLoan.startDate).days
-    assert dressLoan.totalPrice == (days * dressLoan.dress.priceInCents) / 100
+    assert dressLoan.totalPrice == (days * dressLoan.dress.priceInCents) // 100
 
 def test_loan_duration_must_be_equals_to_difference_beetwen_end_date_and_start_date(db):
     dressLoan = mixer.blend('api.DressLoan')

@@ -1,6 +1,7 @@
 from django.contrib.auth.models import Group, User
 from django.core.exceptions import ValidationError
 from django.db.models import Q
+from django.db.utils import IntegrityError
 from django.shortcuts import render
 from rest_framework import generics, serializers
 from rest_framework.permissions import (DjangoModelPermissions, IsAdminUser,
@@ -31,11 +32,14 @@ class DressList(generics.ListCreateAPIView):
         return Dress.objects.filter(Q(deleted=False))
 
     def perform_create(self, serializer):
-        brandIndex = findIndex(self.request.data['brandType'], Dress.BRANDS)
-        colorIndex = findIndex(self.request.data['colorType'], Dress.COLORS)
-        materialIndex = findIndex(self.request.data['materialType'], Dress.MATERIALS)
-        serializer.save(brand=brandIndex, material=materialIndex, color=colorIndex)
-        return super().perform_create(serializer)
+        try:
+            brandIndex = findIndex(self.request.data['brandType'], Dress.BRANDS)
+            colorIndex = findIndex(self.request.data['colorType'], Dress.COLORS)
+            materialIndex = findIndex(self.request.data['materialType'], Dress.MATERIALS)
+            serializer.save(brand=brandIndex, material=materialIndex, color=colorIndex)
+            return super().perform_create(serializer)
+        except Exception as e:
+            raise serializers.ValidationError({'detail': e}, code=400)
 
 
 class DressDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -52,11 +56,14 @@ class DressDetail(generics.RetrieveUpdateDestroyAPIView):
         return Dress.objects.filter(Q(deleted=False))
 
     def perform_update(self, serializer):
-        brandIndex = findIndex(self.request.data['brandType'], Dress.BRANDS)
-        colorIndex = findIndex(self.request.data['colorType'], Dress.COLORS)
-        materialIndex = findIndex(self.request.data['materialType'], Dress.MATERIALS)
-        serializer.save(brand=brandIndex, material=materialIndex, color=colorIndex)
-        return super().perform_update(serializer)
+        try:
+            brandIndex = findIndex(self.request.data['brandType'], Dress.BRANDS)
+            colorIndex = findIndex(self.request.data['colorType'], Dress.COLORS)
+            materialIndex = findIndex(self.request.data['materialType'], Dress.MATERIALS)
+            serializer.save(brand=brandIndex, material=materialIndex, color=colorIndex)
+            return super().perform_update(serializer)
+        except Exception as e:
+            raise serializers.ValidationError({'detail': e}, code=400)
 
 class DressLoanList(generics.ListCreateAPIView):
     queryset = DressLoan.objects.all()

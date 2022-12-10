@@ -18,7 +18,8 @@ class UserSerializer(serializers.ModelSerializer):
 class DressSerializers(serializers.ModelSerializer):
 
     class Meta:
-        fields = ('id', 'brandType', 'priceInCents', 'materialType', 'colorType', 'size', 'description','deleted')
+        fields = ('id', 'brandType', 'priceInCents', 'materialType',
+                  'colorType', 'size', 'description', 'deleted')
         model = Dress
 
 
@@ -29,6 +30,3 @@ class DressLoanSerializers(serializers.ModelSerializer):
         model = DressLoan
         read_only_fields = ['insertBy']
         # depth = 1
-
-    # def create(self, validated_data):
-    #     return DressLoan.objects.create(**validated_data)
