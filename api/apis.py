@@ -18,6 +18,7 @@ def findIndex(key, enumerativ):
         if i[1] == key:
             return i[0]
 
+
 class DressList(generics.ListCreateAPIView):
     queryset = Dress.objects.all()
     serializer_class = DressSerializers
@@ -26,20 +27,37 @@ class DressList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         userDB = User.objects.get(username=self.request.user)
-        userGroupList = list(userDB.groups.values_list('name',flat = True))
+        userGroupList = list(userDB.groups.values_list('name', flat=True))
         if self.request.user.is_superuser or "commessi" in userGroupList:
             return Dress.objects.all()
         return Dress.objects.filter(Q(deleted=False))
 
     def perform_create(self, serializer):
-        try:
-            brandIndex = findIndex(self.request.data['brandType'], Dress.BRANDS)
-            colorIndex = findIndex(self.request.data['colorType'], Dress.COLORS)
-            materialIndex = findIndex(self.request.data['materialType'], Dress.MATERIALS)
-            serializer.save(brand=brandIndex, material=materialIndex, color=colorIndex)
+        brandIndex = findIndex(
+            self.request.data['brandType'], Dress.BRANDS)
+
+        if brandIndex == None:
+            raise serializers.ValidationError(
+                detail={'detail': "Brand is required"}, code=400)
+
+        colorIndex = findIndex(
+            self.request.data['colorType'], Dress.COLORS)
+
+        if colorIndex == None:
+            raise serializers.ValidationError(
+                detail={'detail': "Color is required"}, code=400)
+
+        materialIndex = findIndex(
+            self.request.data['materialType'], Dress.MATERIALS)
+
+        if materialIndex == None:
+            raise serializers.ValidationError(
+                detail={'detail': "Material is required"}, code=400)
+
+        if serializer.is_valid():
+            serializer.save(brand=brandIndex,
+                            material=materialIndex, color=colorIndex)
             return super().perform_create(serializer)
-        except Exception as e:
-            raise serializers.ValidationError({'detail': e}, code=400)
 
 
 class DressDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -50,20 +68,38 @@ class DressDetail(generics.RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         userDB = User.objects.get(username=self.request.user)
-        userGroupList = list(userDB.groups.values_list('name',flat = True))
+        userGroupList = list(userDB.groups.values_list('name', flat=True))
         if self.request.user.is_superuser or "commessi" in userGroupList:
             return Dress.objects.all()
         return Dress.objects.filter(Q(deleted=False))
 
     def perform_update(self, serializer):
-        try:
-            brandIndex = findIndex(self.request.data['brandType'], Dress.BRANDS)
-            colorIndex = findIndex(self.request.data['colorType'], Dress.COLORS)
-            materialIndex = findIndex(self.request.data['materialType'], Dress.MATERIALS)
-            serializer.save(brand=brandIndex, material=materialIndex, color=colorIndex)
+        brandIndex = findIndex(
+            self.request.data['brandType'], Dress.BRANDS)
+
+        if brandIndex == None:
+            raise serializers.ValidationError(
+                detail={'detail': "Brand is required"}, code=400)
+
+        colorIndex = findIndex(
+            self.request.data['colorType'], Dress.COLORS)
+
+        if colorIndex == None:
+            raise serializers.ValidationError(
+                detail={'detail': "Color is required"}, code=400)
+
+        materialIndex = findIndex(
+            self.request.data['materialType'], Dress.MATERIALS)
+
+        if materialIndex == None:
+            raise serializers.ValidationError(
+                detail={'detail': "Material is required"}, code=400)
+
+        if serializer.is_valid():
+            serializer.save(brand=brandIndex,
+                            material=materialIndex, color=colorIndex)
             return super().perform_update(serializer)
-        except Exception as e:
-            raise serializers.ValidationError({'detail': e}, code=400)
+
 
 class DressLoanList(generics.ListCreateAPIView):
     queryset = DressLoan.objects.all()
@@ -73,7 +109,7 @@ class DressLoanList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         userDB = User.objects.get(username=self.request.user)
-        userGroupList = list(userDB.groups.values_list('name',flat = True))
+        userGroupList = list(userDB.groups.values_list('name', flat=True))
         if self.request.user.is_superuser or "commessi" in userGroupList:
             return DressLoan.objects.all()
         return DressLoan.objects.filter(Q(insertBy=self.request.user) | Q(loaner=self.request.user))
@@ -83,12 +119,12 @@ class DressLoanList(generics.ListCreateAPIView):
         group = Group.objects.get(name="user")
         try:
             if (group in userDB.groups.all()):
-                serializer.save(insertBy=self.request.user, loaner=self.request.user)
+                serializer.save(insertBy=self.request.user,
+                                loaner=self.request.user)
             else:
                 serializer.save(insertBy=self.request.user)
         except ValidationError as e:
             raise serializers.ValidationError({'detail': e.message}, code=400)
-
 
 
 class DressLoanDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -99,7 +135,7 @@ class DressLoanDetail(generics.RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         userDB = User.objects.get(username=self.request.user)
-        userGroupList = list(userDB.groups.values_list('name',flat = True))
+        userGroupList = list(userDB.groups.values_list('name', flat=True))
         if self.request.user.is_superuser or "commessi" in userGroupList:
             return DressLoan.objects.all()
         return DressLoan.objects.filter(Q(loaner=self.request.user))

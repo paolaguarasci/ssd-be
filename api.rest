@@ -69,29 +69,29 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "brandType": "VALENTINO",
-  "priceInCents": 5000,
-  "materialType": "COTTON",
-  "colorType": "GRAY",
+  "brandType": "GUCCIs",
+  "priceInCents": 1234,
+  "materialType": "WOOLs",
+  "colorType": "BLACK",
   "size": 42,
-  "description": "aa",
+  "description": "ss",
   "deleted": false
 }
 
 ### 
-PUT {{host}}/api/v1/dress/261ca68e-a392-496b-b07a-1e93dd97d645
+PUT {{host}}/api/v1/dress/79fb8f33-1be7-4463-bddb-4f83cb357099
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "id": "261ca68e-a392-496b-b07a-1e93dd97d645",
-  "brandType": "GUCCaaaI",
-  "priceInCents": 8000,
-  "materialType": "COTTON",
-  "colorType": "RED",
-  "size": 48,
-  "description": "sasas",
-  "deleted": false
+    "id": "79fb8f33-1be7-4463-bddb-4f83cb357099",
+    "brandType": "GUCCI",
+    "priceInCents": 1234,
+    "materialType": "COTTONs",
+    "colorType": "GRAY",
+    "size": 42,
+    "description": "ss",
+    "deleted": false
 }
 
 ###
