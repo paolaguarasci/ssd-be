@@ -33,26 +33,38 @@ class DressList(generics.ListCreateAPIView):
         return Dress.objects.filter(Q(deleted=False))
 
     def perform_create(self, serializer):
+        if not 'brandType' in self.request.data or self.request.data['brandType'] == None:
+            raise serializers.ValidationError(
+                detail={'detail': "Brand is required"}, code=400)
+        
+        if not 'colorType' in self.request.data or self.request.data['colorType'] == None:
+            raise serializers.ValidationError(
+                detail={'detail': "Color is required"}, code=400)
+        
+        if not 'materialType' in self.request.data or self.request.data['materialType'] == None:
+            raise serializers.ValidationError(
+                detail={'detail': "Material is required"}, code=400)
+        
         brandIndex = findIndex(
             self.request.data['brandType'], Dress.BRANDS)
 
         if brandIndex == None:
             raise serializers.ValidationError(
-                detail={'detail': "Brand is required"}, code=400)
+                detail={'detail': "Brand is wrong"}, code=400)
 
         colorIndex = findIndex(
             self.request.data['colorType'], Dress.COLORS)
 
         if colorIndex == None:
             raise serializers.ValidationError(
-                detail={'detail': "Color is required"}, code=400)
+                detail={'detail': "Color is wrong"}, code=400)
 
         materialIndex = findIndex(
             self.request.data['materialType'], Dress.MATERIALS)
 
         if materialIndex == None:
             raise serializers.ValidationError(
-                detail={'detail': "Material is required"}, code=400)
+                detail={'detail': "Material is wrong"}, code=400)
 
         if serializer.is_valid():
             serializer.save(brand=brandIndex,
@@ -74,26 +86,39 @@ class DressDetail(generics.RetrieveUpdateDestroyAPIView):
         return Dress.objects.filter(Q(deleted=False))
 
     def perform_update(self, serializer):
+
+        if not 'brandType' in self.request.data or self.request.data['brandType'] == None:
+            raise serializers.ValidationError(
+                detail={'detail': "Brand is required"}, code=400)
+        
+        if not 'colorType' in self.request.data or self.request.data['colorType'] == None:
+            raise serializers.ValidationError(
+                detail={'detail': "Color is required"}, code=400)
+        
+        if not 'materialType' in self.request.data or self.request.data['materialType'] == None:
+            raise serializers.ValidationError(
+                detail={'detail': "Material is required"}, code=400)
+
         brandIndex = findIndex(
             self.request.data['brandType'], Dress.BRANDS)
 
         if brandIndex == None:
             raise serializers.ValidationError(
-                detail={'detail': "Brand is required"}, code=400)
+                detail={'detail': "Brand is wrong"}, code=400)
 
         colorIndex = findIndex(
             self.request.data['colorType'], Dress.COLORS)
 
         if colorIndex == None:
             raise serializers.ValidationError(
-                detail={'detail': "Color is required"}, code=400)
+                detail={'detail': "Color is wrong"}, code=400)
 
         materialIndex = findIndex(
             self.request.data['materialType'], Dress.MATERIALS)
 
         if materialIndex == None:
             raise serializers.ValidationError(
-                detail={'detail': "Material is required"}, code=400)
+                detail={'detail': "Material is wrong"}, code=400)
 
         if serializer.is_valid():
             serializer.save(brand=brandIndex,

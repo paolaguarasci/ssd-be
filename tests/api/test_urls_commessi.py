@@ -109,7 +109,7 @@ def tests_dress_commesso_can_post_but_wrong_brand(api_client):
     print(response.data)
     assert response.status_code == HTTP_400_BAD_REQUEST
     assert contains(response, 'detail',
-                    'Brand is required')
+                    'Brand is wrong')
 
 
 @pytest.mark.django_db
@@ -126,7 +126,7 @@ def tests_dress_commesso_can_post_but_wrong_material(api_client):
     print(response.data)
     assert response.status_code == HTTP_400_BAD_REQUEST
     assert contains(response, 'detail',
-                    'Material is required')
+                    'Material is wrong')
 
 
 @pytest.mark.django_db
@@ -143,7 +143,7 @@ def tests_dress_commesso_can_post_but_wrong_color(api_client):
     print(response.data)
     assert response.status_code == HTTP_400_BAD_REQUEST
     assert contains(response, 'detail',
-                    'Color is required')
+                    'Color is wrong')
 
 
 @pytest.mark.django_db
@@ -179,8 +179,23 @@ def tests_dress_commesso_can_put_but_wrong_field(api_client):
     }, secure=True)
     assert response.status_code == HTTP_400_BAD_REQUEST
     assert contains(response, 'detail',
-                    'Color is required')
+                    'Color is wrong')
 
+@pytest.mark.django_db
+def tests_dress_commesso_can_put_but_empty_field(api_client):
+    dressID = '28bce53b-6c7e-478b-ab85-a5f2066a5278'
+    path = reverse('dress-detail', kwargs={'id': dressID})
+    response = api_client.put(path, {
+        "id": "28bce53b-6c7e-478b-ab85-a5f2066a5278",
+        "priceInCents": 1234,
+        "materialType": "WOOL",
+        "colorType": "fucsia",
+        "size": 42,
+        "description": "Ciao"
+    }, secure=True)
+    assert response.status_code == HTTP_400_BAD_REQUEST
+    assert contains(response, 'detail',
+                    'Brand is required')
 
 @pytest.mark.django_db
 def tests_dress_commesso_can_delete(api_client):

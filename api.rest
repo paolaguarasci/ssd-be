@@ -69,9 +69,9 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "brandType": "GUCCIs",
+  "brandType": "ARMANI",
   "priceInCents": 1234,
-  "materialType": "WOOLs",
+  "materialType": "WOOL",
   "colorType": "BLACK",
   "size": 42,
   "description": "ss",
@@ -79,19 +79,19 @@ Authorization: Bearer {{authToken}}
 }
 
 ### 
-PUT {{host}}/api/v1/dress/79fb8f33-1be7-4463-bddb-4f83cb357099
+PUT {{host}}/api/v1/dress/7446194d-ae4e-4d19-a853-141a870555ea
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-    "id": "79fb8f33-1be7-4463-bddb-4f83cb357099",
-    "brandType": "GUCCI",
-    "priceInCents": 1234,
-    "materialType": "COTTONs",
+    "id": "7446194d-ae4e-4d19-a853-141a870555ea",
+    "brandType": "VALENTINO",
+    "priceInCents": 1000,
+    "materialType": "COTTON",
     "colorType": "GRAY",
-    "size": 42,
-    "description": "ss",
-    "deleted": false
+    "size": 40,
+    "description": "sa",
+    "deleted": true
 }
 
 ###

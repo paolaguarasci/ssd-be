@@ -21,7 +21,9 @@ class DressSerializers(serializers.ModelSerializer):
         fields = ('id', 'brandType', 'priceInCents', 'materialType',
                   'colorType', 'size', 'description', 'deleted')
         model = Dress
-
+    def validate_brandType(self, data):
+        print("ciao")
+        return super().validate_empty_values(data)
 
 class DressLoanSerializers(serializers.ModelSerializer):
     class Meta:
