@@ -33,18 +33,18 @@ class DressList(generics.ListCreateAPIView):
         return Dress.objects.filter(Q(deleted=False))
 
     def perform_create(self, serializer):
-        if not 'brandType' in self.request.data or self.request.data['brandType'] == None:
+        if not 'brandType' in self.request.data or self.request.data['brandType'] == '' or self.request.data['brandType'] == None:
             raise serializers.ValidationError(
                 detail={'detail': "Brand is required"}, code=400)
-        
-        if not 'colorType' in self.request.data or self.request.data['colorType'] == None:
+
+        if not 'colorType' in self.request.data or self.request.data['colorType'] == '' or self.request.data['colorType'] == None:
             raise serializers.ValidationError(
                 detail={'detail': "Color is required"}, code=400)
-        
-        if not 'materialType' in self.request.data or self.request.data['materialType'] == None:
+
+        if not 'materialType' in self.request.data or self.request.data['materialType'] == '' or self.request.data['materialType'] == None:
             raise serializers.ValidationError(
                 detail={'detail': "Material is required"}, code=400)
-        
+
         brandIndex = findIndex(
             self.request.data['brandType'], Dress.BRANDS)
 
@@ -87,15 +87,15 @@ class DressDetail(generics.RetrieveUpdateDestroyAPIView):
 
     def perform_update(self, serializer):
 
-        if not 'brandType' in self.request.data or self.request.data['brandType'] == None:
+        if not 'brandType' in self.request.data or self.request.data['brandType'] == '' or self.request.data['brandType'] == None:
             raise serializers.ValidationError(
                 detail={'detail': "Brand is required"}, code=400)
-        
-        if not 'colorType' in self.request.data or self.request.data['colorType'] == None:
+
+        if not 'colorType' in self.request.data or self.request.data['colorType'] == '' or self.request.data['colorType'] == None:
             raise serializers.ValidationError(
                 detail={'detail': "Color is required"}, code=400)
-        
-        if not 'materialType' in self.request.data or self.request.data['materialType'] == None:
+
+        if not 'materialType' in self.request.data or self.request.data['materialType'] == '' or self.request.data['materialType'] == None:
             raise serializers.ValidationError(
                 detail={'detail': "Material is required"}, code=400)
 

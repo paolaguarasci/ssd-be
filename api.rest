@@ -69,7 +69,7 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "brandType": "ARMANI",
+  "brandType": "ss",
   "priceInCents": 1234,
   "materialType": "WOOL",
   "colorType": "BLACK",
