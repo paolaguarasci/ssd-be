@@ -29,17 +29,17 @@ def test_dressLoan_terminate_true(db):
 
 def test_loans_start_date_must_not_be_in_the_past(db):
     with pytest.raises(ValidationError) as err:
-        dress = mixer.blend('api.DressLoan', startDate='2022-10-10')
-        dress.full_clean()
+        dressLoan = mixer.blend('api.DressLoan', startDate='2022-10-10')
+        dressLoan.full_clean()
     assert 'Start date must not be in the past' in '\n'.join(
         err.value.messages)
 
 
 def test_loans_end_date_must_be_after_start_date(db):
     with pytest.raises(ValidationError) as err:
-        dress = mixer.blend(
+        dressLoan = mixer.blend(
             'api.DressLoan', startDate='2022-12-10', endDate='2022-12-09')
-        dress.full_clean()
+        dressLoan.full_clean()
     assert 'End date cannot be before start date' in '\n'.join(
         err.value.messages)
 
@@ -123,3 +123,11 @@ def test_try_to_update_whit_alredy_loan_dress(db):
         dressLoan2.save()
     assert 'Dress already loan' in '\n'.join(
         err.value.messages)
+
+def test_try_to_loan_dress_deleted_rise_exception(db):
+    dress = mixer.blend('api.Dress', deleted=True)
+    with pytest.raises(ValidationError) as err:
+        dressLoan = mixer.blend('api.DressLoan', dress=dress, startDate='2022-12-21', endDate='2022-12-23')
+        dressLoan.full_clean()
+        dress.full_clean()
+    assert 'Dress unavailable' in '\n'.join(err.value.messages)

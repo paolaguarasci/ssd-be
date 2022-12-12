@@ -18,6 +18,14 @@ MAX_PRICE_IN_CENT = 1000000
 REGEX_DESCRIPTION = "^[A-Za-z0-9 .,_-]*$"
 ERROR_DESCRIPTION_CHARAPTER_NOT_ALLOWED = "Description must be write using allowed chars (A-Za-z0-9 .,_-)"
 ERROR_DESCRIPTION_ENDDATE_BEFORE_STARTDATE = "End date cannot be before start date."
+ERROR_DRESS_UNAVALIABLE = "Dress unavailable"
+
+
+def validatorDressToLoan(value: str) -> None:
+    if type(value) is uuid.UUID:
+        value = Dress.objects.get(id=value)
+    if value.deleted:
+        raise ValidationError(ERROR_DRESS_UNAVALIABLE)
 
 
 class Dress(models.Model):
@@ -66,12 +74,10 @@ class Dress(models.Model):
     def delete(self, *args, **kwargs):
         self.deleted = True
         self.save()
- 
 
 
 def getTomorrow():
     return date.today()+timedelta(days=1)
-
 
 
 class DressLoan(models.Model):
@@ -79,7 +85,8 @@ class DressLoan(models.Model):
     startDate = models.DateField(
         default=date.today, validators=[startDateValidator])
     endDate = models.DateField(default=getTomorrow)
-    dress = models.ForeignKey(Dress, on_delete=models.CASCADE)
+    dress = models.ForeignKey(Dress, on_delete=models.CASCADE, validators=[
+                              validatorDressToLoan])
     loaner = models.ForeignKey(
         get_user_model(), on_delete=models.CASCADE, related_name='loans')
     insertBy = models.ForeignKey(
@@ -90,7 +97,7 @@ class DressLoan(models.Model):
     def totalPrice(self):
         totalPrice = self.dress.priceInCents * \
             (self.endDate - self.startDate).days
-        return totalPrice // 100 
+        return totalPrice // 100
 
     @property
     def loanDurationDays(self):
@@ -103,7 +110,8 @@ class DressLoan(models.Model):
     def save(self, *args, **kwargs):
         self._validate_start_end_dates()
         dress1 = Dress.objects.filter(id=self.dress.id)
-        obj = DressLoan.objects.filter(Q(dress=dress1.first()) & Q(terminated=False))
+        obj = DressLoan.objects.filter(
+            Q(dress=dress1.first()) & Q(terminated=False))
         if len(obj) == 0:
             return super().save(*args, **kwargs)
         for loan in obj:
