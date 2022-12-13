@@ -119,11 +119,13 @@ class DressDetail(generics.RetrieveUpdateDestroyAPIView):
         if materialIndex == None:
             raise serializers.ValidationError(
                 detail={'detail': "Material is wrong"}, code=400)
-
-        if serializer.is_valid():
-            serializer.save(brand=brandIndex,
-                            material=materialIndex, color=colorIndex)
-            return super().perform_update(serializer)
+        try:
+            if serializer.is_valid():
+                serializer.save(brand=brandIndex,
+                                material=materialIndex, color=colorIndex)
+                return super().perform_update(serializer)
+        except ValidationError as e:
+            raise serializers.ValidationError({'detail': e.message}, code=400)
 
 
 class DressLoanList(generics.ListCreateAPIView):
@@ -164,6 +166,15 @@ class DressLoanDetail(generics.RetrieveUpdateDestroyAPIView):
         if self.request.user.is_superuser or "commessi" in userGroupList:
             return DressLoan.objects.all()
         return DressLoan.objects.filter(Q(loaner=self.request.user))
+
+    def perform_update(self, serializer):
+        try:
+            if serializer.is_valid():
+                serializer.save(insertBy=self.request.user,
+                                loaner=self.request.user)
+                return super().perform_update(serializer)
+        except ValidationError as e:
+            raise serializers.ValidationError({'detail': e.message}, code=400)
 
 
 class UserList(generics.ListAPIView):

@@ -69,33 +69,33 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "brandType": "ss",
+  "brandType": "GUCCI",
   "priceInCents": 1234,
   "materialType": "WOOL",
   "colorType": "BLACK",
   "size": 42,
   "description": "ss",
-  "deleted": false
+  "deleted": true
 }
 
 ### 
-PUT {{host}}/api/v1/dress/7446194d-ae4e-4d19-a853-141a870555ea
+PUT {{host}}/api/v1/dress/51cc5d6f-38be-420e-bd75-2b2359d3badf
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-    "id": "7446194d-ae4e-4d19-a853-141a870555ea",
+     "id": "51cc5d6f-38be-420e-bd75-2b2359d3badf",
     "brandType": "VALENTINO",
-    "priceInCents": 1000,
+    "priceInCents": 5000,
     "materialType": "COTTON",
     "colorType": "GRAY",
-    "size": 40,
-    "description": "sa",
+    "size": 44,
+    "description": "sssss",
     "deleted": true
 }
 
 ###
-DELETE {{host}}/api/v1/dress/c2f8f8f7-933d-44c5-ac2a-3a1116b9a177
+DELETE {{host}}/api/v1/dress/51cc5d6f-38be-420e-bd75-2b2359d3badf
 Authorization: Bearer {{authToken}}
 
 
@@ -115,30 +115,31 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 { 
-  "startDate": "2022-12-13",
-  "endDate": "2022-12-14",
-  "dress": "54416218-701a-4826-a0ad-9fb40348d802",
+  "startDate": "2022-12-31",
+  "endDate": "2023-01-03",
+  "dress": "51cc5d6f-38be-420e-bd75-2b2359d3badf",
   "loaner": 2
 }
 
 ### 
-PUT {{host}}/api/v1/loan/7cf29491-de36-4585-bab2-590f25dd7b05
+PUT {{host}}/api/v1/loan/bf17aea8-2b1d-4b5b-a4c0-5aad167671cc
 Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
 {
-  "id": "7cf29491-de36-4585-bab2-590f25dd7b05",
-  "startDate": "2022-12-05",
-  "endDate": "2022-12-10",
-  "dress": "fba6e9a1-1161-4b97-9a34-e474254bb0d8",
+  "id": "bf17aea8-2b1d-4b5b-a4c0-5aad167671cc",
+  "startDate": "2022-12-30",
+  "endDate": "2023-01-03",
+  "dress": "54416218-701a-4826-a0ad-9fb40348d802",
   "loaner": 2,
-  "totalPrice": 700.0,
-  "loanDurationDays": 7,
-  "terminated": false
+  "totalPrice": 150,
+  "loanDurationDays": 3,
+  "insertBy": 3,
+  "terminated": true
 }
 
 ###
-DELETE {{host}}/api/v1/loan/89415baa-1498-4b33-a311-9c7fc25b7167
+DELETE {{host}}/api/v1/loan/bf17aea8-2b1d-4b5b-a4c0-5aad167671cc
 Authorization: Bearer {{authToken}}
 
 #### USER ######
@@ -157,7 +158,7 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "dress": "28bce53b-6c7e-478b-ab85-a5f2066a5278",
+  "dress": "51cc5d6f-38be-420e-bd75-2b2359d3badf",
   "startDate": "2022-11-26",
   "endDate": "2022-12-12",
   "loaner": 2,

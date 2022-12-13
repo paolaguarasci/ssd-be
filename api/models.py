@@ -59,6 +59,13 @@ class Dress(models.Model):
                                    descriptionSizeValidator, RegexValidator(f'{REGEX_DESCRIPTION}', message=f"{ERROR_DESCRIPTION_CHARAPTER_NOT_ALLOWED}")])
     deleted = models.BooleanField(default=False)
 
+    def save(self, *args, **kwargs):
+        if self.id:
+            oldDress = Dress.objects.filter(id=self.id)
+            if len(oldDress) == 1 and oldDress[0].deleted:
+                raise ValidationError("Dress is alredy deleted")
+        return super().save(*args, **kwargs)
+
     @property
     def brandType(self):
         return self.BRANDS[self.brand][1]
@@ -108,6 +115,10 @@ class DressLoan(models.Model):
             raise ValidationError("End date cannot be before start date.")
 
     def save(self, *args, **kwargs):
+        if self.id:
+            oldDressLoan = DressLoan.objects.filter(id=self.id)
+            if len(oldDressLoan) == 1 and oldDressLoan[0].terminated:
+                raise ValidationError("DressLoan is alredy terminated")
         self._validate_start_end_dates()
         dress1 = Dress.objects.filter(id=self.dress.id)
         obj = DressLoan.objects.filter(
