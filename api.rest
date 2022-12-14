@@ -60,7 +60,7 @@ Authorization: Bearer {{authToken}}
 
 
 ### 
-GET {{host}}/api/v1/dress/28bce53b-6c7e-478b-ab85-a5f2066a5278
+GET {{host}}/api/v1/dress/580b3cfe-b48c-4b5b-9d07-fcf2e6da4668
 Authorization: Bearer {{authToken}}
 
 ###
@@ -79,23 +79,23 @@ Authorization: Bearer {{authToken}}
 }
 
 ### 
-PUT {{host}}/api/v1/dress/51cc5d6f-38be-420e-bd75-2b2359d3badf
+PUT {{host}}/api/v1/dress/81dc5d50-f259-4c6d-8589-50ed03ab9570
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-     "id": "51cc5d6f-38be-420e-bd75-2b2359d3badf",
-    "brandType": "VALENTINO",
-    "priceInCents": 5000,
-    "materialType": "COTTON",
-    "colorType": "GRAY",
-    "size": 44,
-    "description": "sssss",
-    "deleted": true
+  "id": "81dc5d50-f259-4c6d-8589-50ed03ab9570",
+  "brandType": "GUCCI",
+  "priceInCents": 13300,
+  "materialType": "WOOL",
+  "colorType": "BLACK",
+  "size": 42,
+  "description": "ss",
+  "deleted": true
 }
 
 ###
-DELETE {{host}}/api/v1/dress/51cc5d6f-38be-420e-bd75-2b2359d3badf
+DELETE {{host}}/api/v1/dress/336bf0a5-59de-4bd3-901b-41f8d8446b6a
 Authorization: Bearer {{authToken}}
 
 
@@ -115,27 +115,27 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 { 
-  "startDate": "2022-12-31",
-  "endDate": "2023-01-03",
-  "dress": "51cc5d6f-38be-420e-bd75-2b2359d3badf",
+  "startDate": "2022-12-25",
+  "endDate": "2022-12-27",
+  "dress": "336bf0a5-59de-4bd3-901b-41f8d8446b6a",
   "loaner": 2
 }
 
 ### 
-PUT {{host}}/api/v1/loan/bf17aea8-2b1d-4b5b-a4c0-5aad167671cc
+PUT {{host}}/api/v1/loan/999138ec-c702-4fb9-9a4f-043b7e3e01aa
 Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
 {
-  "id": "bf17aea8-2b1d-4b5b-a4c0-5aad167671cc",
-  "startDate": "2022-12-30",
-  "endDate": "2023-01-03",
-  "dress": "54416218-701a-4826-a0ad-9fb40348d802",
+  "id": "999138ec-c702-4fb9-9a4f-043b7e3e01aa",
+  "startDate": "2022-12-14",
+  "endDate": "2022-12-27",
+  "dress": "336bf0a5-59de-4bd3-901b-41f8d8446b6a",
   "loaner": 2,
-  "totalPrice": 150,
-  "loanDurationDays": 3,
+  "totalPrice": 700,
+  "loanDurationDays": 13,
   "insertBy": 3,
-  "terminated": true
+  "terminated": false
 }
 
 ###

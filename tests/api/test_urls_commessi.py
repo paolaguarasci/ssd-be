@@ -10,8 +10,9 @@ from django.forms.models import model_to_dict
 from django.urls import reverse
 from mixer.backend.django import mixer
 from rest_framework.status import (HTTP_200_OK, HTTP_201_CREATED,
-                                   HTTP_204_NO_CONTENT, HTTP_401_UNAUTHORIZED, HTTP_400_BAD_REQUEST,
-                                   HTTP_403_FORBIDDEN, HTTP_404_NOT_FOUND)
+                                   HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST,
+                                   HTTP_401_UNAUTHORIZED, HTTP_403_FORBIDDEN,
+                                   HTTP_404_NOT_FOUND)
 from rest_framework.test import APIClient
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -55,6 +56,8 @@ def getToday():
 def getTodayPlus(days):
     return str(date.today()+timedelta(days=days))
 
+def getDayPlus(startDate, days):
+    return str(startDate+timedelta(days=days))
 ######################### Dress    #############################################
 
 
@@ -248,16 +251,16 @@ def tests_dress_loan_commesso_can_put(api_client):
     dressLoanID = dressLoans[0].id
     path = reverse('dressloan-detail', kwargs={'id': dressLoanID})
     response = api_client.put(path, {
-        "startDate": getToday(),
-        "endDate": getTodayPlus(5),
-        "dress": "fba6e9a1-1161-4b97-9a34-e474254bb0d8",
+        "startDate": dressLoans[0].startDate,
+        "endDate": getDayPlus(dressLoans[0].startDate, 5),
+        "dress": "b49cfe7f-1528-4b89-ac2d-e2d0dd432e16",
         "loaner": 2,
         "totalPrice": 700.0,
         "loanDurationDays": 7,
         "terminated": "false"
     }, secure=True)
     assert response.status_code == HTTP_200_OK
-    assert contains(response, 'startDate', getToday())
+    assert contains(response, 'endDate', str(getDayPlus(dressLoans[0].startDate, 5)))
 
 
 @pytest.mark.django_db

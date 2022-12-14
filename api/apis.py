@@ -169,10 +169,9 @@ class DressLoanDetail(generics.RetrieveUpdateDestroyAPIView):
 
     def perform_update(self, serializer):
         try:
-            if serializer.is_valid():
-                serializer.save(insertBy=self.request.user,
-                                loaner=self.request.user)
-                return super().perform_update(serializer)
+            serializer.save(insertBy=self.request.user,
+                            loaner=self.request.user)
+            return super().perform_update(serializer)
         except ValidationError as e:
             raise serializers.ValidationError({'detail': e.message}, code=400)
 
