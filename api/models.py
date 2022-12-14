@@ -112,7 +112,7 @@ class DressLoan(models.Model):
 
     @property
     def loanDurationDays(self):
-        return (self.endDate - self.startDate).days
+        return (self.endDate - self.startDate).days + 1
 
     def _validate_start_end_dates(self):
         if self.endDate < self.startDate:
