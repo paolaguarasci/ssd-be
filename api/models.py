@@ -80,6 +80,10 @@ class Dress(models.Model):
 
     def delete(self, *args, **kwargs):
         self.deleted = True
+        dressLoandLinked = DressLoan.objects.filter(dress=self)
+        for l in dressLoandLinked:
+            l.terminated = True
+            l.save()
         self.save()
 
 
