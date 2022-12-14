@@ -47,7 +47,7 @@ def test_loans_end_date_must_be_after_start_date(db):
 def test_loans_total_price_must_be_equals_to_day_for_price(db):
     dressLoan = mixer.blend('api.DressLoan')
     dressLoan.full_clean()
-    days = (dressLoan.endDate - dressLoan.startDate).days
+    days = (dressLoan.endDate - dressLoan.startDate).days + 1
     assert dressLoan.totalPrice == (days * dressLoan.dress.priceInCents) // 100
 
 
@@ -58,7 +58,7 @@ def test_loan_duration_must_be_equals_to_difference_beetwen_end_date_and_start_d
     assert dressLoan.loanDurationDays == days
 
 
-def test_try_to_loan_alredy_loaned_dress_same_period(db):
+def test_try_to_loan_already_loaned_dress_same_period(db):
     dressLoan1 = mixer.blend(
         'api.DressLoan', startDate='2022-12-10', endDate='2022-12-12')
     with pytest.raises(ValidationError) as err:
@@ -70,7 +70,7 @@ def test_try_to_loan_alredy_loaned_dress_same_period(db):
         err.value.messages)
 
 
-def test_try_to_loan_alredy_loaned_dress_overlap_startdate(db):
+def test_try_to_loan_already_loaned_dress_overlap_startdate(db):
     dressLoan1 = mixer.blend(
         'api.DressLoan', startDate='2022-12-10', endDate='2022-12-12')
     with pytest.raises(ValidationError) as err:
@@ -82,7 +82,7 @@ def test_try_to_loan_alredy_loaned_dress_overlap_startdate(db):
         err.value.messages)
 
 
-def test_try_to_loan_alredy_loaned_dress_overlap_enddate(db):
+def test_try_to_loan_already_loaned_dress_overlap_enddate(db):
     dressLoan1 = mixer.blend(
         'api.DressLoan', startDate='2022-12-10', endDate='2022-12-12')
     with pytest.raises(ValidationError) as err:
@@ -94,7 +94,7 @@ def test_try_to_loan_alredy_loaned_dress_overlap_enddate(db):
         err.value.messages)
 
 
-def test_try_to_loan_alredy_loaned_dress_no_overlap(db):
+def test_try_to_loan_already_loaned_dress_no_overlap(db):
     dressLoan1 = mixer.blend(
         'api.DressLoan', startDate='2023-12-10', endDate='2023-12-12')
     dressLoan2 = mixer.blend(
@@ -111,7 +111,7 @@ def test_try_to_loan_never_loaned(db):
     assert dressLoan.id
 
 
-def test_try_to_update_whit_alredy_loan_dress(db):
+def test_try_to_update_whit_already_loan_dress(db):
     dress1 = mixer.blend('api.Dress')
     dress2 = mixer.blend('api.Dress')
     dressLoan1 = mixer.blend(
@@ -130,4 +130,4 @@ def test_try_to_loan_dress_deleted_rise_exception(db):
         dressLoan = mixer.blend('api.DressLoan', dress=dress, startDate='2022-12-21', endDate='2022-12-23')
         dressLoan.full_clean()
         dress.full_clean()
-    assert 'Dress unavailable' in '\n'.join(err.value.messages)
+    assert 'You cannot change the loan because the dress is no longer available' in '\n'.join(err.value.messages)

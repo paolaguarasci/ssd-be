@@ -22,6 +22,8 @@ class DressSerializers(serializers.ModelSerializer):
                   'colorType', 'size', 'description', 'deleted')
         model = Dress
         read_only_fields = ['deleted']
+    
+    
 
 
 class DressLoanSerializers(serializers.ModelSerializer):
@@ -29,4 +31,4 @@ class DressLoanSerializers(serializers.ModelSerializer):
         fields = ('id', 'startDate', 'endDate', 'dress', 'loaner',
                   'totalPrice', 'loanDurationDays', 'insertBy', 'terminated')
         model = DressLoan
-        read_only_fields = ['insertBy', 'terminated']
+        read_only_fields = ['startDate','insertBy', 'terminated']

@@ -9,8 +9,8 @@ from rest_framework.permissions import (DjangoModelPermissions, IsAdminUser,
 from rest_framework.response import Response
 
 from api.models import Dress, DressLoan
-from api.serializers import (DressLoanSerializers, DressSerializers,
-                             UserSerializer)
+from api.serializers import ( DressLoanSerializers,
+                             DressSerializers, UserSerializer)
 
 
 def findIndex(key, enumerativ):
@@ -167,12 +167,12 @@ class DressLoanDetail(generics.RetrieveUpdateDestroyAPIView):
             return DressLoan.objects.all()
         return DressLoan.objects.filter(Q(loaner=self.request.user))
 
-    def perform_update(self, serializer):
+    def perform_update(self, serializer, **validated_data):
+        dress = Dress.objects.filter(id=self.request.data['dress'])
         try:
-            if serializer.is_valid():
-                serializer.save(insertBy=self.request.user,
-                                loaner=self.request.user)
-                return super().perform_update(serializer)
+            serializer.save(insertBy=self.request.user,
+                            loaner=self.request.user, dress=dress[0])
+            return super().perform_update(serializer)
         except ValidationError as e:
             raise serializers.ValidationError({'detail': e.message}, code=400)
 

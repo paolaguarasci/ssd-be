@@ -63,7 +63,7 @@ class Dress(models.Model):
         if self.id:
             oldDress = Dress.objects.filter(id=self.id)
             if len(oldDress) == 1 and oldDress[0].deleted:
-                raise ValidationError("Dress is alredy deleted")
+                raise ValidationError("Dress is already deleted")
         return super().save(*args, **kwargs)
 
     @property
@@ -80,6 +80,10 @@ class Dress(models.Model):
 
     def delete(self, *args, **kwargs):
         self.deleted = True
+        dressLoandLinked = DressLoan.objects.filter(dress=self)
+        for l in dressLoandLinked:
+            l.terminated = True
+            l.save()
         self.save()
 
 
@@ -118,9 +122,11 @@ class DressLoan(models.Model):
         if self.id:
             oldDressLoan = DressLoan.objects.filter(id=self.id)
             if len(oldDressLoan) == 1 and oldDressLoan[0].terminated:
-                raise ValidationError("DressLoan is alredy terminated")
+                raise ValidationError("DressLoan is already terminated")
         self._validate_start_end_dates()
         dress1 = Dress.objects.filter(id=self.dress.id)
+        if (dress1[0].deleted):
+            raise ValidationError("You cannot change the loan because the dress is no longer available")
         obj = DressLoan.objects.filter(
             Q(dress=dress1.first()) & Q(terminated=False))
         if len(obj) == 0:
