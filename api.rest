@@ -60,7 +60,7 @@ Authorization: Bearer {{authToken}}
 
 
 ### 
-GET {{host}}/api/v1/dress/336bf0a5-59de-4bd3-901b-41f8d8446b6a
+GET {{host}}/api/v1/dress/40506fda-ad31-4434-a534-b0ecf7198b18
 Authorization: Bearer {{authToken}}
 
 ###
@@ -69,33 +69,33 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "brandType": "GUCCI",
-  "priceInCents": 1234,
-  "materialType": "WOOL",
-  "colorType": "BLACK",
-  "size": 42,
-  "description": "ss",
+  "brandType": "VALENTINO",
+  "priceInCents": 9000,
+  "materialType": "COTTON",
+  "colorType": "RED",
+  "size": 44,
+  "description": "Fantastico",
   "deleted": true
 }
 
 ### 
-PUT {{host}}/api/v1/dress/81dc5d50-f259-4c6d-8589-50ed03ab9570
+PUT {{host}}/api/v1/dress/40506fda-ad31-4434-a534-b0ecf7198b18
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "id": "81dc5d50-f259-4c6d-8589-50ed03ab9570",
+  "id": "40506fda-ad31-4434-a534-b0ecf7198b18",
   "brandType": "GUCCI",
-  "priceInCents": 13300,
+  "priceInCents": 7800,
   "materialType": "WOOL",
   "colorType": "BLACK",
   "size": 42,
   "description": "ss",
-  "deleted": true
+  "deleted": false
 }
 
 ###
-DELETE {{host}}/api/v1/dress/ea53a166-246a-42d9-80a7-d32290597180
+DELETE {{host}}/api/v1/dress/40506fda-ad31-4434-a534-b0ecf7198b18
 Authorization: Bearer {{authToken}}
 
 
@@ -106,7 +106,7 @@ GET {{host}}/api/v1/loan
 Authorization: Bearer {{authToken}}
 
 ### 
-GET {{host}}/api/v1/loan/c97725e3-5a7f-4595-bf0e-93730e33bc6c
+GET {{host}}/api/v1/loan/5f4f0ff2-5398-4bb4-9e64-bd17e610a72a
 Authorization: Bearer {{authToken}}
 
 ###
@@ -115,25 +115,25 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 { 
-  "startDate": "2025-12-12",
-  "endDate": "2025-12-27",
-  "dress": "a3ac91b5-d3d1-43b1-ab06-e3fe8a49b160",
-  "loaner": 2
+  "startDate": "2022-12-31",
+  "endDate": "2023-01-03",
+  "dress": "018ce62f-0b09-4b0c-a414-d897600dac55",
+  "loaner": 3
 }
 
 ### 
-PUT {{host}}/api/v1/loan/c00e0836-08e4-4e01-9d0a-8d17ec927ad8
+PUT {{host}}/api/v1/loan/a131df8a-7511-4640-b085-357cac1e6e34
 Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
 {
-  "id": "c00e0836-08e4-4e01-9d0a-8d17ec927ad8",
-  "startDate": "2022-12-29",
-  "endDate": "2025-12-13",
-  "dress": "a3ac91b5-d3d1-43b1-ab06-e3fe8a49b160",
-  "loaner": 2,
-  "totalPrice": 13697,
-  "loanDurationDays": 1109,
+  "id": "a131df8a-7511-4640-b085-357cac1e6e34",
+  "startDate": "2022-12-25",
+  "endDate": "2022-12-29",
+  "dress": "018ce62f-0b09-4b0c-a414-d897600dac55",
+  "loaner": 3,
+  "totalPrice": 360,
+  "loanDurationDays": 4,
   "insertBy": 3,
   "terminated": false
 }

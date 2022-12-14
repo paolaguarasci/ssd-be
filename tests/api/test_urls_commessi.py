@@ -56,6 +56,7 @@ def getToday():
 def getTodayPlus(days):
     return str(date.today()+timedelta(days=days))
 
+
 def getDayPlus(startDate, days):
     return str(startDate+timedelta(days=days))
 ######################### Dress    #############################################
@@ -184,6 +185,7 @@ def tests_dress_commesso_can_put_but_wrong_field(api_client):
     assert contains(response, 'detail',
                     'Color is wrong')
 
+
 @pytest.mark.django_db
 def tests_dress_commesso_can_put_but_empty_field(api_client):
     dressID = '28bce53b-6c7e-478b-ab85-a5f2066a5278'
@@ -199,6 +201,7 @@ def tests_dress_commesso_can_put_but_empty_field(api_client):
     assert response.status_code == HTTP_400_BAD_REQUEST
     assert contains(response, 'detail',
                     'Brand is required')
+
 
 @pytest.mark.django_db
 def tests_dress_commesso_can_delete(api_client):
@@ -251,16 +254,18 @@ def tests_dress_loan_commesso_can_put(api_client):
     dressLoanID = dressLoans[0].id
     path = reverse('dressloan-detail', kwargs={'id': dressLoanID})
     response = api_client.put(path, {
-        "startDate": dressLoans[0].startDate,
-        "endDate": getDayPlus(dressLoans[0].startDate, 5),
+        "id": dressLoanID,
+        "startDate": '2022-12-19',
+        "endDate": '2022-12-20',
         "dress": "b49cfe7f-1528-4b89-ac2d-e2d0dd432e16",
         "loaner": 2,
         "totalPrice": 700.0,
         "loanDurationDays": 7,
         "terminated": "false"
     }, secure=True)
+    print(response.json())
     assert response.status_code == HTTP_200_OK
-    assert contains(response, 'endDate', str(getDayPlus(dressLoans[0].startDate, 5)))
+    assert contains(response, 'endDate', '2022-12-12')
 
 
 @pytest.mark.django_db

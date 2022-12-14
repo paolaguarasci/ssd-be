@@ -9,7 +9,7 @@ from rest_framework.permissions import (DjangoModelPermissions, IsAdminUser,
 from rest_framework.response import Response
 
 from api.models import Dress, DressLoan
-from api.serializers import ( DressLoanSerializers,
+from api.serializers import (DressLoanSerializers,
                              DressSerializers, UserSerializer)
 
 
@@ -168,10 +168,16 @@ class DressLoanDetail(generics.RetrieveUpdateDestroyAPIView):
         return DressLoan.objects.filter(Q(loaner=self.request.user))
 
     def perform_update(self, serializer, **validated_data):
-        dress = Dress.objects.filter(id=self.request.data['dress'])
+        print("ciao")
+        old = DressLoan.objects.filter(id=self.request.data['id'])
+        serializer = DressLoanSerializers(
+            old[0], data=self.request.data, partial=True)
+        # dress = Dress.objects.filter(id=self.request.data['dress'])
         try:
-            serializer.save(insertBy=self.request.user,
-                            loaner=self.request.user, dress=dress[0])
+            # serializer.save(insertBy=self.request.user,
+            #                 loaner=self.request.user, dress=dress[0])
+            if serializer.is_valid():
+                serializer.save()
             return super().perform_update(serializer)
         except ValidationError as e:
             raise serializers.ValidationError({'detail': e.message}, code=400)
