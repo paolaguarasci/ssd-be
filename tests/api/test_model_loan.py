@@ -60,10 +60,10 @@ def test_loan_duration_must_be_equals_to_difference_beetwen_end_date_and_start_d
 
 def test_try_to_loan_already_loaned_dress_same_period(db):
     dressLoan1 = mixer.blend(
-        'api.DressLoan', startDate='2022-12-10', endDate='2022-12-12')
+        'api.DressLoan', startDate='2022-12-28', endDate='2022-12-30')
     with pytest.raises(ValidationError) as err:
         dressLoan2 = mixer.blend(
-            'api.DressLoan', dress=dressLoan1.dress, startDate='2022-12-10', endDate='2022-12-12')
+            'api.DressLoan', dress=dressLoan1.dress, startDate='2022-12-28', endDate='2022-12-30')
         dressLoan1.full_clean()
         dressLoan2.full_clean()
     assert 'Dress already loan' in '\n'.join(
@@ -72,10 +72,10 @@ def test_try_to_loan_already_loaned_dress_same_period(db):
 
 def test_try_to_loan_already_loaned_dress_overlap_startdate(db):
     dressLoan1 = mixer.blend(
-        'api.DressLoan', startDate='2022-12-10', endDate='2022-12-12')
+        'api.DressLoan', startDate='2022-12-27', endDate='2022-12-30')
     with pytest.raises(ValidationError) as err:
         dressLoan2 = mixer.blend(
-            'api.DressLoan', dress=dressLoan1.dress, startDate='2022-12-11', endDate='2022-12-14')
+            'api.DressLoan', dress=dressLoan1.dress, startDate='2022-12-29', endDate='2023-01-31')
         dressLoan1.full_clean()
         dressLoan2.full_clean()
     assert 'Dress already loan' in '\n'.join(
@@ -84,10 +84,10 @@ def test_try_to_loan_already_loaned_dress_overlap_startdate(db):
 
 def test_try_to_loan_already_loaned_dress_overlap_enddate(db):
     dressLoan1 = mixer.blend(
-        'api.DressLoan', startDate='2022-12-10', endDate='2022-12-12')
+        'api.DressLoan', startDate='2022-12-28', endDate='2022-12-31')
     with pytest.raises(ValidationError) as err:
         dressLoan2 = mixer.blend(
-            'api.DressLoan', dress=dressLoan1.dress, startDate='2022-12-07', endDate='2022-12-11')
+            'api.DressLoan', dress=dressLoan1.dress, startDate='2022-12-25', endDate='2022-12-29')
         dressLoan1.full_clean()
         dressLoan2.full_clean()
     assert 'Dress already loan' in '\n'.join(
@@ -96,9 +96,9 @@ def test_try_to_loan_already_loaned_dress_overlap_enddate(db):
 
 def test_try_to_loan_already_loaned_dress_no_overlap(db):
     dressLoan1 = mixer.blend(
-        'api.DressLoan', startDate='2023-12-10', endDate='2023-12-12')
+        'api.DressLoan', startDate='2022-12-28', endDate='2022-12-31')
     dressLoan2 = mixer.blend(
-        'api.DressLoan', dress=dressLoan1.dress, startDate='2023-12-7', endDate='2023-12-9')
+        'api.DressLoan', dress=dressLoan1.dress, startDate='2023-12-07', endDate='2023-12-09')
     dressLoan1.full_clean()
     dressLoan2.full_clean()
     assert dressLoan1.id != dressLoan2.id
@@ -115,9 +115,9 @@ def test_try_to_update_whit_already_loan_dress(db):
     dress1 = mixer.blend('api.Dress')
     dress2 = mixer.blend('api.Dress')
     dressLoan1 = mixer.blend(
-        'api.DressLoan', dress=dress1, startDate='2022-12-10', endDate='2022-12-12')
+        'api.DressLoan', dress=dress1, startDate='2022-12-28', endDate='2022-12-31')
     dressLoan2 = mixer.blend(
-        'api.DressLoan', dress=dress2, startDate='2022-12-10', endDate='2022-12-12')
+        'api.DressLoan', dress=dress2, startDate='2022-12-28', endDate='2022-12-31')
     with pytest.raises(ValidationError) as err:
         dressLoan2.dress = dress1
         dressLoan2.save()
