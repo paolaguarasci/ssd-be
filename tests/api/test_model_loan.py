@@ -130,4 +130,4 @@ def test_try_to_loan_dress_deleted_rise_exception(db):
         dressLoan = mixer.blend('api.DressLoan', dress=dress, startDate='2022-12-21', endDate='2022-12-23')
         dressLoan.full_clean()
         dress.full_clean()
-    assert 'You cannot change the loan because the dress is no longer available' in '\n'.join(err.value.messages)
+    assert 'Dress unavailable' in '\n'.join(err.value.messages)
