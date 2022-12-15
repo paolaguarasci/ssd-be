@@ -174,5 +174,6 @@ class DressLoan(models.Model):
             return super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
-        self.terminated = True
-        self.save()
+        if (self.terminated == False):
+            self.terminated = True
+            self.save()
