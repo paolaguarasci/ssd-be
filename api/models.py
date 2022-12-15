@@ -129,17 +129,18 @@ class DressLoan(models.Model):
             raise ValidationError("You cannot change the loan because the dress is no longer available")
         obj = DressLoan.objects.filter(
             Q(dress=dress1.first()) & Q(terminated=False))
-        print(obj)
+        print("obj",obj)
         if len(obj) == 0:
             return super().save(*args, **kwargs)
         for loan in obj:
-            if loan.id != self.id and (loan.startDate <= self.startDate and loan.endDate >= self.startDate):
+            if loan.id != self.id and ((loan.startDate <= self.startDate and loan.endDate <= self.startDate) or (loan.startDate <= self.endDate and loan.endDate <= self.endDate)):
                 print("1", loan.startDate <= self.startDate, loan.endDate >= self.startDate)
                 print("1", loan.startDate, self.startDate, loan.endDate, self.startDate)
                 raise ValidationError("Dress already loan")
-            elif loan.id != self.id and (loan.startDate <= self.endDate and loan.endDate >= self.endDate):
-                print("2")
-                raise ValidationError("Dress already loan")
+            # elif loan.id != self.id and (loan.startDate <= self.endDate and loan.endDate <= self.endDate):
+            #     print("2", loan.startDate <= self.startDate, loan.endDate >= self.startDate)
+            #     print("2", loan.startDate, self.startDate, loan.endDate, self.startDate)
+            #     raise ValidationError("Dress already loan")
         return super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
