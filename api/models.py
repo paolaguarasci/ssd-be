@@ -80,12 +80,13 @@ class Dress(models.Model):
         return self.COLORS[self.color][1]
 
     def delete(self, *args, **kwargs):
-        self.deleted = True
-        dressLoandLinked = DressLoan.objects.filter(dress=self)
-        for l in dressLoandLinked:
-            l.terminated = True
-            l.save()
-        self.save()
+        if self.deleted != True:
+            self.deleted = True
+            dressLoandLinked = DressLoan.objects.filter(dress=self)
+            for l in dressLoandLinked:
+                l.terminated = True
+                l.save()
+            self.save()
 
 
 def getTomorrow():
