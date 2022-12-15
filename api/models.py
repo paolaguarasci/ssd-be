@@ -22,11 +22,7 @@ ERROR_DRESS_UNAVALIABLE = "Dress unavailable"
 ERROR_DATE_IS_BEFORE_TODAY = "Start date must not be in the past"
 
 
-def validatorDressToLoan(value: str) -> None:
-    if type(value) is uuid.UUID:
-        value = Dress.objects.get(id=value)
-    if value.deleted:
-        raise ValidationError(ERROR_DRESS_UNAVALIABLE)
+
 
 
 class Dress(models.Model):
@@ -80,12 +76,13 @@ class Dress(models.Model):
         return self.COLORS[self.color][1]
 
     def delete(self, *args, **kwargs):
-        self.deleted = True
-        dressLoandLinked = DressLoan.objects.filter(dress=self)
-        for l in dressLoandLinked:
-            l.terminated = True
-            l.save()
-        self.save()
+        if self.deleted != True:
+            self.deleted = True
+            dressLoandLinked = DressLoan.objects.filter(dress=self)
+            for l in dressLoandLinked:
+                l.terminated = True
+                l.save()
+            self.save()
 
 
 def getTomorrow():
@@ -98,7 +95,7 @@ class DressLoan(models.Model):
         default=date.today, validators=[])
     endDate = models.DateField(default=getTomorrow)
     dress = models.ForeignKey(Dress, on_delete=models.CASCADE, validators=[
-                              validatorDressToLoan])
+                              ])
     loaner = models.ForeignKey(
         get_user_model(), on_delete=models.CASCADE, related_name='loans')
     insertBy = models.ForeignKey(
@@ -149,11 +146,16 @@ class DressLoan(models.Model):
         if (dress1[0].deleted):
             raise ValidationError(
                 "You cannot change the loan because the dress is no longer available")
+    
+    def _validatorDressToLoan(value) -> None:
+        if value.dress.deleted:
+            raise ValidationError(ERROR_DRESS_UNAVALIABLE)
 
     def save(self, *args, **kwargs):
         oldDressLoan = DressLoan.objects.filter(id=self.id)
-
+        print("ciao")
         if len(oldDressLoan) == 1 and oldDressLoan[0].terminated:
+            print("ciao")
             raise ValidationError("DressLoan is already terminated")
 
         elif len(oldDressLoan) == 1:
@@ -164,6 +166,7 @@ class DressLoan(models.Model):
             return super().save(*args, **kwargs)
 
         elif len(oldDressLoan) == 0:
+            self._validatorDressToLoan()
             self._validate_start_end_dates()
             self._startDateValidator()
             self._dressDeletes()
@@ -171,5 +174,6 @@ class DressLoan(models.Model):
             return super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
-        self.terminated = True
-        self.save()
+        if (self.terminated == False):
+            self.terminated = True
+            self.save()
