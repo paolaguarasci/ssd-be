@@ -19,6 +19,7 @@ REGEX_DESCRIPTION = "^[A-Za-z0-9 .,_-]*$"
 ERROR_DESCRIPTION_CHARAPTER_NOT_ALLOWED = "Description must be write using allowed chars (A-Za-z0-9 .,_-)"
 ERROR_DESCRIPTION_ENDDATE_BEFORE_STARTDATE = "End date cannot be before start date."
 ERROR_DRESS_UNAVALIABLE = "Dress unavailable"
+ERROR_DATE_IS_BEFORE_TODAY = "Start date must not be in the past"
 
 
 def validatorDressToLoan(value: str) -> None:
@@ -94,7 +95,7 @@ def getTomorrow():
 class DressLoan(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     startDate = models.DateField(
-        default=date.today, validators=[startDateValidator])
+        default=date.today, validators=[])
     endDate = models.DateField(default=getTomorrow)
     dress = models.ForeignKey(Dress, on_delete=models.CASCADE, validators=[
                               validatorDressToLoan])
@@ -118,30 +119,56 @@ class DressLoan(models.Model):
         if self.endDate < self.startDate:
             raise ValidationError("End date cannot be before start date.")
 
-    def save(self, *args, **kwargs):
-        if self.id:
-            oldDressLoan = DressLoan.objects.filter(id=self.id)
-            if len(oldDressLoan) == 1 and oldDressLoan[0].terminated:
-                raise ValidationError("DressLoan is already terminated")
-        self._validate_start_end_dates()
-        dress1 = Dress.objects.filter(id=self.dress.id)
-        if (dress1[0].deleted):
-            raise ValidationError("You cannot change the loan because the dress is no longer available")
-        obj = DressLoan.objects.filter(
+    def _startDateValidator(value) -> None:
+        if value.startDate < date.today():
+            raise ValidationError(f"{ERROR_DATE_IS_BEFORE_TODAY}")
+
+    def _checkOverlapDate(value) -> None:
+        print("Controllo overlap")
+        dress1 = Dress.objects.filter(id=value.dress.id)
+        objs = DressLoan.objects.filter(
             Q(dress=dress1.first()) & Q(terminated=False))
-        print("obj",obj)
-        if len(obj) == 0:
+        newSD = value.startDate
+        newED = value.endDate
+        if len(objs) >= 1:
+            for loan in objs:
+                existSD = loan.startDate
+                existED = loan.endDate
+                if loan.id != value.id and ((newSD <= existSD and existSD <= newED)):
+                    print("1")
+                    raise ValidationError("Dress already loan")
+                if loan.id != value.id and ((newSD <= existED and existED <= newED)):
+                    print("2")
+                    raise ValidationError("Dress already loan")
+                if loan.id != value.id and ((newSD >= existSD and newED <= existED)):
+                    print("3")
+                    raise ValidationError("Dress already loan")
+
+    def _dressDeletes(value) -> None:
+        dress1 = Dress.objects.filter(id=value.dress.id)
+        if (dress1[0].deleted):
+            raise ValidationError(
+                "You cannot change the loan because the dress is no longer available")
+
+    def save(self, *args, **kwargs):
+        oldDressLoan = DressLoan.objects.filter(id=self.id)
+
+        if len(oldDressLoan) == 1 and oldDressLoan[0].terminated:
+            raise ValidationError("DressLoan is already terminated")
+
+        elif len(oldDressLoan) == 1:
+            self._validate_start_end_dates()
+            self._dressDeletes()
+            self._checkOverlapDate()
+            self.startDate = oldDressLoan[0].startDate
             return super().save(*args, **kwargs)
-        for loan in obj:
-            if loan.id != self.id and ((loan.startDate <= self.startDate and loan.endDate <= self.startDate) or (loan.startDate <= self.endDate and loan.endDate <= self.endDate)):
-                print("1", loan.startDate <= self.startDate, loan.endDate >= self.startDate)
-                print("1", loan.startDate, self.startDate, loan.endDate, self.startDate)
-                raise ValidationError("Dress already loan")
-            # elif loan.id != self.id and (loan.startDate <= self.endDate and loan.endDate <= self.endDate):
-            #     print("2", loan.startDate <= self.startDate, loan.endDate >= self.startDate)
-            #     print("2", loan.startDate, self.startDate, loan.endDate, self.startDate)
-            #     raise ValidationError("Dress already loan")
-        return super().save(*args, **kwargs)
+
+        elif len(oldDressLoan) == 0:
+            self._validate_start_end_dates()
+            self._startDateValidator()
+            self._dressDeletes()
+            self._checkOverlapDate()
+            return super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
         self.terminated = True

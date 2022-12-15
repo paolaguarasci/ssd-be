@@ -265,7 +265,7 @@ def tests_dress_loan_commesso_can_put(api_client):
     }, secure=True)
     print(response.json())
     assert response.status_code == HTTP_200_OK
-    assert contains(response, 'endDate', '2022-12-12')
+    assert contains(response, 'endDate', '2022-12-20')
 
 
 @pytest.mark.django_db
