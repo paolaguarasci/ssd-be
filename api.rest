@@ -12,7 +12,7 @@
 
 @authToken = {{login.response.body.access}}
 
-###
+### id 1
 # @name login
 POST {{host}}/api/v1/login/
 Content-Type: application/json
@@ -22,7 +22,7 @@ Content-Type: application/json
   "password": "{{superuser_password}}"
 }
 
-###
+### id 3
 # @name login
 POST {{host}}/api/v1/login/
 Content-Type: application/json
@@ -32,7 +32,7 @@ Content-Type: application/json
   "password": "{{staff_password}}"
 }
 
-###
+### id 2
 # @name login
 POST {{host}}/api/v1/login/
 Content-Type: application/json
@@ -42,7 +42,7 @@ Content-Type: application/json
   "password": "{{user_password}}"
 }
 
-###
+### id 4
 # @name login
 POST {{host}}/api/v1/login/
 Content-Type: application/json
@@ -52,6 +52,23 @@ Content-Type: application/json
   "password": "{{user2_password}}"
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ####  DRESS ######
 
 ### 
@@ -60,48 +77,129 @@ Authorization: Bearer {{authToken}}
 
 
 ### 
-GET {{host}}/api/v1/dress/40506fda-ad31-4434-a534-b0ecf7198b18
+GET {{host}}/api/v1/dress/4e4f2096-a1d0-40e0-ad0e-20fd63a65930
 Authorization: Bearer {{authToken}}
 
 ###
-POST {{host}}/api/v1/dress/2023-12-07
-  "priceInCents": 9000,
-  "materialType": "COTTON",
-  "colorType": "RED",
-  "size": 44,
-  "description": "Fantastico",
-  "deleted": true
-}
-
-### 
-PUT {{host}}/api/v1/dress/018ce62f-0b09-4b0c-a414-d897600dac55
+POST {{host}}/api/v1/dress/
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-    "id": "018ce62f-0b09-4b0c-a414-d897600dac55",
-    "brandType": "VALENTINO",
-    "priceInCents": 9000,
-    "materialType": "COTTON",
-    "colorType": "RED",
-    "size": 44,
-    "description": "Fantastico",
-    "deleted": false
+  "brandType": "ARMANI",
+  "priceInCents": 30000,
+  "materialType": "WOOL",
+  "colorType": "RED",
+  "size": 42,
+  "description": "Lorem",
+  "deleted": false
 }
 
 ###
-DELETE {{host}}/api/v1/dress/40506fda-ad31-4434-a534-b0ecf7198b18
+POST {{host}}/api/v1/dress/
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "brandType": "GUCCI",
+  "priceInCents": 35000,
+  "materialType": "COTTON",
+  "colorType": "RED",
+  "size": 44,
+  "description": "So sweet",
+  "deleted": false
+}
+
+###
+POST {{host}}/api/v1/dress/
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "brandType": "VALENTINO",
+  "priceInCents": 30000,
+  "materialType": "SILK",
+  "colorType": "BLACK",
+  "size": 46,
+  "description": "Bello",
+  "deleted": false
+}
+
+### 
+PUT {{host}}/api/v1/dress/4e4f2096-a1d0-40e0-ad0e-20fd63a65930
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "id": "4e4f2096-a1d0-40e0-ad0e-20fd63a65930",
+  "brandType": "GUCCI",
+  "priceInCents": 3300,
+  "materialType": "COTTON",
+  "colorType": "RED",
+  "size": 44,
+  "description": "So sweet",
+  "deleted": false
+}
+
+###
+DELETE {{host}}/api/v1/dress/88c3c938-8fa8-4418-b5e9-f3b195931fc9
 Authorization: Bearer {{authToken}}
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #### DRESS LOAN ######
+
+### Dress (deleted)
+# true    b4e9ae0a-f307-4a7e-94de-287609c1f519
+# false   f68237d7-7ffc-47f1-9c95-6e828071bf6e
+# false   88c3c938-8fa8-4418-b5e9-f3b195931fc9
+# false   4e4f2096-a1d0-40e0-ad0e-20fd63a65930
+
+### DressLoan (terminated) (deleted)
+# l: false  d: true   questo non e' possibile per via della delete del dress che setta in automatico i loans collegati a terminati
+
+# l: true   154837ee-2550-4172-b6a4-07dea3b8b958  d: true   88c3c938-8fa8-4418-b5e9-f3b195931fc9  u: user2
+# l: true   e1c846ca-45bb-41bc-8fb9-29d85fb2559a  d: false  4e4f2096-a1d0-40e0-ad0e-20fd63a65930  u: user1
+
+# l: false  cacde85d-4f03-440d-a8b4-74cdcdf57a43  d: false  f68237d7-7ffc-47f1-9c95-6e828071bf6e  u: user1
+# l: false  744b9a8e-2a83-406e-9cbe-b14e0cd34265  d: false  4e4f2096-a1d0-40e0-ad0e-20fd63a65930  u: user2
 
 ### 
 GET {{host}}/api/v1/loan
 Authorization: Bearer {{authToken}}
 
 ### 
-GET {{host}}/api/v1/loan/a131df8a-7511-4640-b085-357cac1e6e34
+GET {{host}}/api/v1/loan/e1c846ca-45bb-41bc-8fb9-29d85fb2559a
 Authorization: Bearer {{authToken}}
 
 ###
@@ -110,73 +208,30 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 { 
-  "startDate": "2022-12-29",
-  "endDate": "2023-01-01",
-  "dress": "f63c5997-3f96-4ddf-a72f-19f91c96ab43",
-  "loaner": 3
+  "startDate": "2023-01-20",
+  "endDate": "2023-01-25",
+  "dress": "4e4f2096-a1d0-40e0-ad0e-20fd63a65930",
+  "loaner": 2
 }
 
 ### 
-PUT {{host}}/api/v1/loan/17af64be-e95f-4501-8581-c2037889e938
+PUT {{host}}/api/v1/loan/e1c846ca-45bb-41bc-8fb9-29d85fb2559a
 Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
 {
-    "id": "28acfa16-ecf2-47c8-bb54-12f8738bedf1",
-    "startDate": "2022-12-01",
-    "endDate": "2023-01-03",
-    "dress": "f63c5997-3f96-4ddf-a72f-19f91c96ab43",
-    "loaner": 3,
-    "totalPrice": 3060,
-    "loanDurationDays": 34,
-    "insertBy": 3,
-    "terminated": false
-}
-
-###
-DELETE {{host}}/api/v1/loan/bf17aea8-2b1d-4b5b-a4c0-5aad167671cc
-Authorization: Bearer {{authToken}}
-
-#### USER ######
-
-### 
-GET {{host}}/api/v1/user
-Authorization: Bearer {{authToken}}
-
-### 
-GET {{host}}/api/v1/user/3
-Authorization: Bearer {{authToken}}
-
-###
-POST {{host}}/api/v1/user/
-Content-Type: application/json
-Authorization: Bearer {{authToken}}
-
-{
-  "dress": "51cc5d6f-38be-420e-bd75-2b2359d3badf",
-  "startDate": "2022-11-26",
-  "endDate": "2022-12-12",
+  "id": "e1c846ca-45bb-41bc-8fb9-29d85fb2559a",
+  "startDate": "2023-01-20",
+  "endDate": "2023-01-25",
+  "dress": "4e4f2096-a1d0-40e0-ad0e-20fd63a65930",
   "loaner": 2,
-  "insertBy": 3
-}
-
-### 
-PUT {{host}}/api/v1/user/1
-Authorization: Bearer {{authToken}}
-Content-Type: application/json
-
-{
-  "id": "b3819e83-1863-49a2-8871-02acb2eae79d",
-  "dress": "28bce53b-6c7e-478b-ab85-a5f2066a5278",
-  "startDate": "2022-11-26",
-  "endDate": "2022-12-12",
-  "loaner": 2,
-  "insertBy": 1
+  "totalPrice": 2100,
+  "loanDurationDays": 6,
+  "insertBy": 3,
+  "terminated": true
 }
 
 ###
-DELETE {{host}}/api/v1/user/4
+DELETE {{host}}/api/v1/loan/154837ee-2550-4172-b6a4-07dea3b8b958
 Authorization: Bearer {{authToken}}
 
-a.keys()
-res.json()[list(res.json().keys())[0]]
