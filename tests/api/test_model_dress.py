@@ -89,3 +89,10 @@ def test_dress_deleted_true(db):
     dress = mixer.blend('api.Dress')
     Dress.delete(dress)
     assert dress.deleted == True
+
+def test_dress_deleted_true(db):
+    dress = mixer.blend('api.Dress',)
+    Dress.delete(dress)
+    with pytest.raises(ValidationError) as err:
+        Dress.save(dress)
+    assert 'Dress is already deleted' in '\n'.join(err.value.messages)
